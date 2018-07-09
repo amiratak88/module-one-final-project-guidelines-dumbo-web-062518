@@ -8,3 +8,12 @@ Pokemon.create(name: "Oddish")
 Pokemon.create(name: "Onyx")
 Pokemon.create(name: "Geodude")
 Pokemon.create(name: "Psyduck")
+
+Trainer.create(name: "Peter")
+Trainer.create(name: "Dan")
+Trainer.create(name: "Anthony")
+
+Location.create(name: "Flatiron School")
+Location.create(name: "Central Park")
+Location.create(name: "Statue of Liberty")
+Location.create(name: "MoMA")
