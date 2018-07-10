@@ -20,7 +20,8 @@ def location_menu
   p "What do you want to do?"
   p "1. Look for pokemon."
   p "2. Go to another location."
-
+  p "q. Quit"
+  p "t. View trainer profile"
   input = gets.chomp
 
   case input
@@ -32,7 +33,7 @@ def location_menu
     $trainer.go_to_location(gets.chomp)
     location_menu
   end
-
+  invisible_menu(input)
 end
 
 def encounter_menu
@@ -40,11 +41,23 @@ def encounter_menu
   p "What do you want to do?"
   p "1. Catch Pokemon"
   p "2. Run away!!!"
+  p "q. Quit"
+  p "t. View trainer profile"
   input = gets.chomp
   case input
   when "1"
     $trainer.catch_pokemon(found_pokemon)
   when "2"
     location_menu
+  end
+  invisible_menu(input)
+end
+
+def invisible_menu(input)
+  case input
+  when "q"
+    p "Thanks for playing!"
+  when "t"
+    p "You are #{$trainer.name}"
   end
 end
