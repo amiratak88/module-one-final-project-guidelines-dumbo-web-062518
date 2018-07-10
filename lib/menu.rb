@@ -109,7 +109,12 @@ def pokemon_menu
     Encounter.destroy(input2)
     trainer_menu
   when "2"
-    trainer.find
+    p "Enter a pokemon id to rename"
+    input3 = gets.chomp
+    p "Enter a name for the pokemon #{Encounter.find(input3)}"
+    input4 = gets.chomp
+    Encounter.find(input3).update(nickname: input4)
+    p Encounter.find(input3).nickname
   when "3"
     trainer_menu
   end
