@@ -14,10 +14,10 @@ class Trainer < ActiveRecord::Base
 
   def look_for_pokemon
     #generates random pokemon from array
-    found_pokemon = Pokemon.find(rand(1..10))
+    found_pokemon = Pokemon.find_by(pokedex_id: rand(1..151))
     p "A wild #{found_pokemon.name} has appeared!"
     catch_pokemon(found_pokemon)
-    Encounter.all
+    # Encounter.all
   end
 
   def catch_pokemon(found_pokemon)

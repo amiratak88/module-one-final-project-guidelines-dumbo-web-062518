@@ -1,19 +1,20 @@
-Pokemon.create(name: "Pikachu")
-Pokemon.create(name: "Bulbasaur")
-Pokemon.create(name: "Squirtle")
-Pokemon.create(name: "Charmander")
-Pokemon.create(name: "Eevee")
-Pokemon.create(name: "Gyrados")
-Pokemon.create(name: "Oddish")
-Pokemon.create(name: "Onyx")
-Pokemon.create(name: "Geodude")
-Pokemon.create(name: "Psyduck")
+def populate_pokemon
+  counter = 1
+  until counter == 15 do
+    new_mon = Pokemon.create(pokedex_id: counter)
+    new_mon.name = new_mon.display_name
+    new_mon.save
+    counter += 1
+  end
+end
 
-Trainer.create(name: "Peter")
-Trainer.create(name: "Dan")
-Trainer.create(name: "Anthony")
+populate_pokemon
 
-Location.create(name: "Flatiron School")
-Location.create(name: "Central Park")
-Location.create(name: "Statue of Liberty")
-Location.create(name: "MoMA")
+peter = Trainer.create(name: "Peter")
+dan = Trainer.create(name: "Dan")
+anthony = Trainer.create(name: "Anthony")
+
+flatiron = Location.create(name: "Flatiron School")
+central_park = Location.create(name: "Central Park")
+statue_of_liberty = Location.create(name: "Statue of Liberty")
+moma = Location.create(name: "MoMA")
