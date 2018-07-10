@@ -13,13 +13,13 @@ class Trainer < ActiveRecord::Base
     Location.find_by name: location_name
   end
 
-  def look_for_pokemon
+  # def look_for_pokemon
     #generates random pokemon from array
-    found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
-    p "A wild #{found_pokemon.name} has appeared!"
-    catch_pokemon(found_pokemon)
+    # found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
+    # p "A wild #{found_pokemon.name} has appeared!"
+    # catch_pokemon(found_pokemon)
     # Encounter.all
-  end
+  # end
 
   def catch_pokemon(found_pokemon)
     Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)

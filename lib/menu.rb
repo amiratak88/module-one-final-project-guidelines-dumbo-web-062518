@@ -25,11 +25,26 @@ def location_menu
 
   case input
   when "1"
-    $trainer.look_for_pokemon
+    encounter_menu
     location_menu
   when "2"
     puts "Where do you want to go?"
     $trainer.go_to_location(gets.chomp)
+    location_menu
+  end
+
+end
+
+def encounter_menu
+  found_pokemon = Pokemon.generate_pokemon
+  p "What do you want to do?"
+  p "1. Catch Pokemon"
+  p "2. Run away!!!"
+  input = gets.chomp
+  case input
+  when "1"
+    $trainer.catch_pokemon(found_pokemon)
+  when "2"
     location_menu
   end
 end
