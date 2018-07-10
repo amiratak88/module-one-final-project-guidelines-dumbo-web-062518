@@ -3,6 +3,7 @@ require_relative '../config/environment'
 
 
 puts "HELLO WORLD"
+
 #look for pokemon
 #go to another location
 #add "You notice pokemon at _____ location"

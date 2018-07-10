@@ -28,6 +28,17 @@ class Trainer < ActiveRecord::Base
     self.encounters.map {|encounter| Pokemon.find(encounter.pokemon_id).name}
   end
 
+  def pick_trainer
+    puts "Enter your trainer's name"
+    trainer_name = gets.chomp
+    if Trainer.all.find_by name: trainer_name
+      location_menu
+    else
+      Trainer.create(name: trainer_name)
+      location_menu
+    end
+  end
+
   # def current_location_by_visit
   #   Visit.last.id
   # end
