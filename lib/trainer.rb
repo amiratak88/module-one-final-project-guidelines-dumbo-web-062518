@@ -1,4 +1,6 @@
 class Trainer < ActiveRecord::Base
+  has_many :locations, through: :visits
+  has_many :encounters, through: :visits
   has_many :visits
 
   def go_to_location(location_name)
@@ -22,32 +24,9 @@ class Trainer < ActiveRecord::Base
     Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
   end
 
-  def my_visits
-    Visit.where(trainer_id: self.id)
-  end
-
-  def my_visit_ids
-    my_visits.map {|visit| visit.id}
-  end
-
-  def my_encounters
-    array = []
-    my_visit_ids.each do |visit|
-      if Encounter.where(visit_id: visit) != []
-        array << Encounter.where(visit_id: visit)
-      end
-    end
-    array.flatten
-  end
-
   def my_pokemon
-    my_encounters.map do |encounter|
-      # if encounter != []
-        Pokemon.find(encounter.pokemon_id).name
-      # end
-    end
+    self.encounters.map {|encounter| Pokemon.find(encounter.pokemon_id).name}
   end
-
 
   # def current_location_by_visit
   #   Visit.last.id
@@ -76,9 +55,5 @@ class Trainer < ActiveRecord::Base
 
 #Methods:
 
-
-
-  # def
-  # end
 
 end
