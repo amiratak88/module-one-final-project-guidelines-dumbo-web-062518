@@ -23,14 +23,17 @@ def location_menu
   p "q. Quit"
   p "t. View trainer profile"
   input = gets.chomp
+  system "clear"
 
   case input
   when "1"
+    system "clear"
     encounter_menu
     location_menu
   when "2"
     puts "Where do you want to go?"
     $trainer.go_to_location(gets.chomp)
+    system "clear"
     location_menu
   end
   quit_option(input)
@@ -44,10 +47,12 @@ def encounter_menu
   p "2. Run away!!!"
   p "q. Quit"
   input = gets.chomp
+  system "clear"
   case input
   when "1"
     $trainer.catch_pokemon(found_pokemon)
   when "2"
+    system "clear"
     location_menu
   end
   quit_option(input)
