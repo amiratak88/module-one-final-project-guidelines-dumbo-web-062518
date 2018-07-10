@@ -3,12 +3,14 @@ def start_game
   trainer_name = gets.chomp
   if Trainer.all.find_by(name: trainer_name)
     $trainer = Trainer.all.find_by(name: trainer_name)
+    system "clear"
     p "Welcome back, #{$trainer.name}!"
     visit = Visit.where("trainer_id=#{$trainer.id}").last
     $current_location = Location.find(visit.location_id)
     location_menu
   else
     $trainer = Trainer.create(name: trainer_name)
+    system "clear"
     p "Welcome #{$trainer.name}!"
     $trainer.go_to_location
     location_menu
@@ -23,7 +25,6 @@ def location_menu
   p "q. Quit"
   p "t. View trainer profile"
   input = gets.chomp
-  system "clear"
 
   case input
   when "1"
@@ -31,6 +32,7 @@ def location_menu
     encounter_menu
     location_menu
   when "2"
+    system "clear"
     puts "Where do you want to go?"
     $trainer.go_to_location(gets.chomp)
     system "clear"
@@ -52,6 +54,7 @@ def encounter_menu
   case input
   when "1"
     trainer.catch_pokemon(found_pokemon)
+    p "You caught #{found_pokemon.name}!"
   when "2"
     system "clear"
     location_menu
@@ -60,15 +63,17 @@ def encounter_menu
 end
 
 def trainer_menu
-  puts "1. View Pokemon."
-  puts "2. View visited locations."
-  puts "3. Go back."
+  p "Hello trainer #{$trainer.name}!"
+  p "1. View Pokemon."
+  p "2. View visited locations."
+  p "3. Go back."
 
   input = gets.chomp
 
   case input
   when "1"
-    $trainer.my_pokemon.each { |pokemon| p pokemon }
+    # $trainer.my_pokemon.each { |pokemon| p pokemon }
+    system "clear"
     pokemon_menu
   when "2"
     visits = Visit.where("trainer_id=#{$trainer.id}")
@@ -91,7 +96,7 @@ end
 def profile_option(input)
   case input
   when "t"
-    p "You are #{$trainer.name}"
+    system "clear"
     trainer_menu
   end
 end
@@ -117,11 +122,14 @@ def pokemon_menu
   when "2"
     p "Enter a pokemon id to rename"
     input3 = gets.chomp
-    p "Enter a name for the pokemon #{Encounter.find(input3)}"
+    p "Enter a name for the pokemon #{Pokemon.find(Encounter.find(input3).pokemon_id).name}"
     input4 = gets.chomp
     Encounter.find(input3).update(nickname: input4)
     p Encounter.find(input3).nickname
+    system "clear"
+    pokemon_menu
   when "3"
+    system "clear"
     trainer_menu
   end
 end
