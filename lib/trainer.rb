@@ -40,6 +40,11 @@ class Trainer < ActiveRecord::Base
     end
   end
 
+  def my_pokemon_with_id
+    # self.encounters.map {|encounter| encounter.id}
+    self.encounters.each {|encounter| p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id}"}
+  end
+
   # def current_location_by_visit
   #   Visit.last.id
   # end

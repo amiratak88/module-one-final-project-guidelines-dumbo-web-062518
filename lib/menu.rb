@@ -63,7 +63,7 @@ def trainer_menu
   case input
   when "1"
     $trainer.my_pokemon.each { |pokemon| p pokemon }
-    trainer_menu
+    pokemon_menu
   when "2"
     visits = Visit.where("trainer_id=#{$trainer.id}")
     uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
@@ -86,6 +86,36 @@ def profile_option(input)
   case input
   when "t"
     p "You are #{$trainer.name}"
+    trainer_menu
+  end
+end
+
+def pokemon_menu
+  trainer = Trainer.find($trainer.id)
+  pokemon = trainer.my_pokemon
+
+  p "Here are your pokemon:"
+  trainer.my_pokemon_with_id
+  # pokemon.each {|pokemon| p "#{pokemon.id} - #{pokemon.name}"}
+  p "What do you want to do?"
+  p "1. Release a pokemon"
+  p "2. Rename a pokemon"
+  p "3. Go back."
+  input = gets.chomp
+  case input
+  when "1"
+    p "Enter a pokemon id to release."
+    input2 = gets.chomp
+    Encounter.destroy(input2)
+    trainer_menu
+  when "2"
+    p "Enter a pokemon id to rename"
+    input3 = gets.chomp
+    p "Enter a name for the pokemon #{Encounter.find(input3)}"
+    input4 = gets.chomp
+    Encounter.find(input3).update(nickname: input4)
+    p Encounter.find(input3).nickname
+  when "3"
     trainer_menu
   end
 end
