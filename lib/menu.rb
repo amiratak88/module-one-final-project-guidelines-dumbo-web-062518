@@ -34,7 +34,7 @@ def location_menu
     location_menu
   end
   quit_option(input)
-  trainer_option(input)
+  profile_option(input)
 end
 
 def encounter_menu
@@ -62,11 +62,13 @@ def trainer_menu
 
   case input
   when "1"
-    p "hi"
+    $trainer.my_pokemon.each { |pokemon| p pokemon }
+    trainer_menu
   when "2"
     visits = Visit.where("trainer_id=#{$trainer.id}")
     uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
     uniq_locations.uniq.each { |location| p location }
+    trainer_menu
   when "3"
     location_menu
   end
