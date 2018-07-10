@@ -22,6 +22,7 @@ class Trainer < ActiveRecord::Base
   # end
 
   def catch_pokemon(found_pokemon)
+    trainer = Trainer.find($trainer.id)
     Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
   end
 

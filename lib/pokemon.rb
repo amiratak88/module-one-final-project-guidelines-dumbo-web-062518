@@ -19,7 +19,7 @@ class Pokemon <ActiveRecord::Base
 
   def self.generate_pokemon
   #generates random pokemon from array
-    found_pokemon = self.find_by(pokedex_id: rand(1..15))
+    found_pokemon = self.find_by(pokedex_id: rand(1...15))
     p "A wild #{found_pokemon.name} has appeared!"
     found_pokemon
     # catch_pokemon(found_pokemon)

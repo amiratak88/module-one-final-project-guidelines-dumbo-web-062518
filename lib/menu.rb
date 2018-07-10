@@ -39,6 +39,7 @@ end
 
 def encounter_menu
   found_pokemon = Pokemon.generate_pokemon
+  trainer = Trainer.find($trainer.id)
   p "What do you want to do?"
   p "1. Catch Pokemon"
   p "2. Run away!!!"
@@ -46,7 +47,7 @@ def encounter_menu
   input = gets.chomp
   case input
   when "1"
-    $trainer.catch_pokemon(found_pokemon)
+    trainer.catch_pokemon(found_pokemon)
   when "2"
     location_menu
   end
