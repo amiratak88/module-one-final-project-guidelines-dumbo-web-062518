@@ -33,7 +33,8 @@ def location_menu
     $trainer.go_to_location(gets.chomp)
     location_menu
   end
-  invisible_menu(input)
+  quit_option(input)
+  trainer_option(input)
 end
 
 def encounter_menu
@@ -42,7 +43,6 @@ def encounter_menu
   p "1. Catch Pokemon"
   p "2. Run away!!!"
   p "q. Quit"
-  p "t. View trainer profile"
   input = gets.chomp
   case input
   when "1"
@@ -50,14 +50,40 @@ def encounter_menu
   when "2"
     location_menu
   end
-  invisible_menu(input)
+  quit_option(input)
 end
 
-def invisible_menu(input)
+def trainer_menu
+  puts "1. View Pokemon."
+  puts "2. View visited locations."
+  puts "3. Go back."
+
+  input = gets.chomp
+
+  case input
+  when "1"
+    p "hi"
+  when "2"
+    visits = Visit.where("trainer_id=#{$trainer.id}")
+    uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
+    uniq_locations.uniq.each { |location| p location }
+  when "3"
+    location_menu
+  end
+end
+
+def quit_option(input)
   case input
   when "q"
     p "Thanks for playing!"
+    exit
+  end
+end
+
+def profile_option(input)
+  case input
   when "t"
     p "You are #{$trainer.name}"
+    trainer_menu
   end
 end
