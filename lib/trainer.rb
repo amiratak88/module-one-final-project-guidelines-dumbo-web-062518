@@ -3,9 +3,10 @@ class Trainer < ActiveRecord::Base
   has_many :encounters, through: :visits
   has_many :visits
 
-  def go_to_location(location_name)
+  def go_to_location(location_name = "Flatiron School")
     v = find_location(location_name)
     Visit.create(location_id: v.id, trainer_id: self.id)
+    $current_location = v
   end
 
   def find_location(location_name)
@@ -14,7 +15,7 @@ class Trainer < ActiveRecord::Base
 
   def look_for_pokemon
     #generates random pokemon from array
-    found_pokemon = Pokemon.find_by(pokedex_id: rand(1..151))
+    found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
     p "A wild #{found_pokemon.name} has appeared!"
     catch_pokemon(found_pokemon)
     # Encounter.all
