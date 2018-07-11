@@ -22,7 +22,12 @@ class Pokemon <ActiveRecord::Base
   end
 
   def display_types
-    pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    if type_array[1] == nil
+      "#{type_array[0]}"
+    else
+      "#{type_array[0]} & #{type_array[1]}"
+    end
   end
 
   def display_image
@@ -30,6 +35,15 @@ class Pokemon <ActiveRecord::Base
       :limit_x => 0.5,
       :limit_y => 0.5,
       :center_x => true,
+      :center_y => false,
+      :resolution => "high"
+  end
+
+  def display_image_small
+    Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+      :limit_x => 0.1,
+      :limit_y => 0.1,
+      :center_x => false,
       :center_y => false,
       :resolution => "high"
   end
