@@ -79,6 +79,10 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       p "OMG you have killed #{found_pokemon.name}!"
     elsif pokemon_hp < 400
       p "#{found_pokemon.name} is weak!"
+    elsif pokemon_hp < 600
+      p "#{found_pokemon.name} is looking tired..."
+    elsif pokemon_hp < 800
+      p "#{found_pokemon.name} is pretty angry!"
     end
     pokemon_hp
   end
@@ -88,8 +92,8 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     attack_pokemon = rand(1..500)
     pokemon_hp -= attack_pokemon
     p "You attacked #{found_pokemon.name}"
-    found_pokemon.display_image
     pokemon_status(found_pokemon, pokemon_hp)
+    found_pokemon.display_image
     # battle_pokemon_menu
     battle_menu(found_pokemon, pokemon_hp, self)
   end
