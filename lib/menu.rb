@@ -114,6 +114,7 @@ end
 def pokemon_menu(active_trainer)
   clear_screen
   pokemon = active_trainer.my_pokemon
+  active_trainer.encounters.reload
 
   p "Here are your pokemon:"
   active_trainer.my_pokemon_with_id
