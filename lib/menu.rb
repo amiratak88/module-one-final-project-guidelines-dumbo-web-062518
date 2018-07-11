@@ -77,7 +77,7 @@ def encounter_menu(active_trainer)
     # end
 
     menu.choice 'Fight!', -> do
-      active_trainer.battle_actions(found_pokemon, 1000)
+      battle_menu(found_pokemon, 1000, active_trainer)
     end
 
     menu.choice 'Run away!', -> do
@@ -152,6 +152,30 @@ def pokemon_menu(active_trainer)
 
     menu.choice 'Go back', -> do
       trainer_menu(active_trainer)
+    end
+  end
+end
+
+def battle_menu(found_pokemon, pokemon_hp, active_trainer)
+  input = TTY::Prompt.new
+
+  input.select('What do you want to do?', cycle: true) do |menu|
+
+    menu.choice 'Catch pokemon', -> do
+      if pokemon_hp <= 0
+        p "#{found_pokemon.name} is dead, you can't catch it."
+      else
+        active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+      end
+    end
+
+    menu.choice 'Attack pokemon', -> do
+      active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
+    end
+
+    menu.choice 'Run away!!!', -> do
+      clear_screen
+      location_menu(active_trainer)
     end
   end
 end
