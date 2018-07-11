@@ -14,7 +14,7 @@ class Trainer < ActiveRecord::Base
   end
 
   def catch_pokemon(found_pokemon)
-    trainer = Trainer.find($trainer.id)
+    # trainer = Trainer.find($trainer.id)
     Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
   end
 
@@ -22,16 +22,16 @@ class Trainer < ActiveRecord::Base
     self.encounters.map {|encounter| Pokemon.find(encounter.pokemon_id).name}
   end
 
-  def pick_trainer
-    puts "Enter your trainer's name"
-    trainer_name = gets.chomp
-    if Trainer.all.find_by name: trainer_name
-      location_menu
-    else
-      Trainer.create(name: trainer_name)
-      location_menu
-    end
-  end
+  # def pick_trainer
+  #   puts "Enter your trainer's name"
+  #   trainer_name = gets.chomp
+  #   if Trainer.all.find_by name: trainer_name
+  #     location_menu
+  #   else
+  #     Trainer.create(name: trainer_name)
+  #     location_menu
+  #   end
+  # end
 
   def my_pokemon_with_id
     # self.encounters.map {|encounter| encounter.id}
