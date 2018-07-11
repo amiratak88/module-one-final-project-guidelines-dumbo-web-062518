@@ -126,6 +126,13 @@ def pokemon_menu(active_trainer)
   when "1"
     p "Enter a pokemon id to release."
     input2 = gets.chomp
+    if Encounter.find(input2).nickname == nil
+      p "You released #{Pokemon.find(Encounter.find(input2).pokemon_id).name}."
+      p "Bye bye, #{Pokemon.find(Encounter.find(input2).pokemon_id).name}"
+    else
+      p "You released #{Encounter.find(input2).nickname}."
+      p "Bye bye, #{Encounter.find(input2).nickname}"
+    end
     Encounter.destroy(input2)
     trainer_menu(active_trainer)
   when "2"
