@@ -123,15 +123,20 @@ def pokemon_menu(active_trainer)
   input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Release a pokemon', -> do
-      p "Enter a pokemon id to release."
-      input2 = gets.chomp
-      clear_screen
-      if Encounter.find(input2).nickname == nil
-        "You released #{Pokemon.find(Encounter.find(input2).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(input2).pokemon_id).name}!"
-      else
-        p "You released #{Encounter.find(input2).nickname}.  Bye #{Encounter.find(input2).nickname}!"
+      prompt = TTY::Prompt.new
+      poke_id = prompt.ask("Enter a pokemon id to release: ") do |q|
+        q.required true
+        q.validate (/^\d+$/, 'Invalid ID')
+        q.convert :int
       end
-      Encounter.destroy(input2)
+
+      clear_screen
+      if Encounter.find(poke_id).nickname == nil
+        "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!"
+      else
+        p "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!"
+      end
+      Encounter.destroy(poke_id)
       active_trainer.encounters.reload
       trainer_menu(active_trainer)
     end
