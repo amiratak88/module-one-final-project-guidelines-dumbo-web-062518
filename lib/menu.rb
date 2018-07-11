@@ -58,21 +58,13 @@ def encounter_menu(active_trainer)
   clear_screen
   case input
   when "1"
-<<<<<<< HEAD
-    active_trainer.catch_pokemon(found_pokemon)
+    active_trainer.catch_pokemon(found_pokemon, 1000)
     p "You caught #{found_pokemon.name}!"
   when "2"
+    active_trainer.battle_pokemon(found_pokemon, 1000)
+  when "3"
     clear_screen
     location_menu(active_trainer)
-=======
-    trainer.catch_pokemon(found_pokemon, 1000)
-    # p "You caught #{found_pokemon.name}!"
-  when "2"
-    trainer.battle_pokemon(found_pokemon, 1000)
-  when "3"
-    system "clear"
-    location_menu
->>>>>>> anthony
   end
   quit_option(input, active_trainer)
 end
