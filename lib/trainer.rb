@@ -17,8 +17,6 @@ class Trainer < ActiveRecord::Base
     JSON.parse(place_api.body)
   end
 
-  #&placeid=ChIJOwg_06VPwokRYv534QaPC8g
-
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
       p "We couldn't find that location. Sorry! Please try again, maybe being more specific."
@@ -38,52 +36,30 @@ class Trainer < ActiveRecord::Base
     Location.find_by name: location_name
   end
 
-  # def look_for_pokemon
-    #generates random pokemon from array
-    # found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
-    # p "A wild #{found_pokemon.name} has appeared!"
-    # catch_pokemon(found_pokemon)
-    # Encounter.all
-  # end
-
 def catch_pokemon(found_pokemon, pokemon_hp)
-  hp_percent = pokemon_hp
     catch_percent = 0
-    # trainer = Trainer.find($trainer.id)
     3.times do |catch|
       catch_percent += rand(1..300)
-      # p "catch_percent #{catch_percent}"
     end
     if catch_percent >= pokemon_hp
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
       system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
-      spinner.auto_spin # Automatic animation with default interval
-      sleep(2) # Perform task
-      spinner.stop("You caught #{found_pokemon.name}!") # Stop animation
-      # p "You caught #{found_pokemon.name}!"
+      spinner.auto_spin
+      sleep(2)
+      spinner.stop("You caught #{found_pokemon.name}!")
     else
       system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
-      spinner.auto_spin # Automatic animation with default interval
-      sleep(2) # Perform task
-      spinner.stop("#{found_pokemon.name} popped out") # Stop animation
-      battle_pokemon_menu
-      battle_pokemon(found_pokemon, hp_percent)
-      # p "#{found_pokemon.name} got away!"
+      spinner.auto_spin
+      sleep(2)
+      spinner.stop("#{found_pokemon.name} popped out")
+      battle_actions(found_pokemon, pokemon_hp)
     end
   end
 
-  def battle_pokemon_menu
-    p "What do you want to do?"
-    p "1. Catch Pokemon"
-    p "2. Battle Pokemon"
-    p "3. Run away!!!"
-    p "q. Quit"
-  end
-
   def pokemon_status(found_pokemon,pokemon_hp)
-    if pokemon_hp < 0
+    if pokemon_hp <= 0
       p "OMG you have killed #{found_pokemon.name}!"
     elsif pokemon_hp < 400
       p "#{found_pokemon.name} is weak!"
@@ -97,7 +73,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     p "You attacked #{found_pokemon.name}"
     found_pokemon.display_image
     pokemon_status(found_pokemon, pokemon_hp)
-    battle_pokemon_menu
+    # battle_pokemon_menu
     battle_actions(found_pokemon, pokemon_hp)
   end
 
@@ -107,7 +83,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     input.select('What do you want to do?', cycle: true) do |menu|
 
       menu.choice 'Catch pokemon', -> do
-        if pokemon_hp < 0
+        if pokemon_hp <= 0
           p "#{found_pokemon.name} is dead, you can't catch it."
         else
           self.catch_pokemon(found_pokemon, pokemon_hp)
