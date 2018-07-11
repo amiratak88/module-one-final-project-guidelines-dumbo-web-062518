@@ -1,16 +1,20 @@
+def clear_screen
+  system "clear"
+end
+
 def start_game
   puts "Enter your trainer's name"
   trainer_name = gets.chomp
   if Trainer.all.find_by(name: trainer_name)
     $trainer = Trainer.all.find_by(name: trainer_name)
-    system "clear"
+    clear_screen
     p "Welcome back, #{$trainer.name}!"
     visit = Visit.where("trainer_id=#{$trainer.id}").last
     $current_location = Location.find(visit.location_id)
     location_menu
   else
     $trainer = Trainer.create(name: trainer_name)
-    system "clear"
+    clear_screen
     p "Welcome #{$trainer.name}!"
     $trainer.go_to_location
     location_menu
@@ -28,14 +32,14 @@ def location_menu
 
   case input
   when "1"
-    system "clear"
+    clear_screen
     encounter_menu
     location_menu
   when "2"
-    system "clear"
+    clear_screen
     puts "Where do you want to go?"
     $trainer.go_to_location(gets.chomp)
-    system "clear"
+    clear_screen
     location_menu
   end
   quit_option(input)
@@ -50,13 +54,13 @@ def encounter_menu
   p "2. Run away!!!"
   p "q. Quit"
   input = gets.chomp
-  system "clear"
+  clear_screen
   case input
   when "1"
     trainer.catch_pokemon(found_pokemon)
     p "You caught #{found_pokemon.name}!"
   when "2"
-    system "clear"
+    clear_screen
     location_menu
   end
   quit_option(input)
@@ -73,7 +77,7 @@ def trainer_menu
   case input
   when "1"
     # $trainer.my_pokemon.each { |pokemon| p pokemon }
-    system "clear"
+    clear_screen
     pokemon_menu
   when "2"
     visits = Visit.where("trainer_id=#{$trainer.id}")
@@ -96,7 +100,7 @@ end
 def profile_option(input)
   case input
   when "t"
-    system "clear"
+    clear_screen
     trainer_menu
   end
 end
@@ -126,10 +130,10 @@ def pokemon_menu
     input4 = gets.chomp
     Encounter.find(input3).update(nickname: input4)
     p Encounter.find(input3).nickname
-    system "clear"
+    clear_screen
     pokemon_menu
   when "3"
-    system "clear"
+    clear_screen
     trainer_menu
   end
 end
