@@ -30,6 +30,19 @@ class Pokemon <ActiveRecord::Base
     end
   end
 
+  def get_types
+    type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    type_string = String.new
+    type_array.each_with_index do |type, index|
+      if index == 0
+        type_string = type
+      else
+        type_string = type_string + ", " + type
+      end
+    end
+    type_string
+  end
+
   def display_image
     Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
       :limit_x => 0.5,
