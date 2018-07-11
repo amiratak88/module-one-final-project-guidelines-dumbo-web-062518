@@ -22,8 +22,23 @@ class Trainer < ActiveRecord::Base
   # end
 
   def catch_pokemon(found_pokemon)
+    hp_percent = 100
+    catch_percent = 0
     trainer = Trainer.find($trainer.id)
-    Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
+    3.times do |catch|
+      catch_percent += rand(1..75)
+      # p "catch_percent #{catch_percent}"
+    end
+    if catch_percent >= 100
+      Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
+      spinner.auto_spin # Automatic animation with default interval
+      sleep(2) # Perform task
+      spinner.stop("You caught #{found_pokemon.name}!") # Stop animation
+      # p "You caught #{found_pokemon.name}!"
+    else
+      p "#{found_pokemon.name} got away!"
+    end
   end
 
   def my_pokemon

@@ -54,7 +54,7 @@ def encounter_menu
   case input
   when "1"
     trainer.catch_pokemon(found_pokemon)
-    p "You caught #{found_pokemon.name}!"
+    # p "You caught #{found_pokemon.name}!"
   when "2"
     system "clear"
     location_menu
@@ -126,6 +126,7 @@ def pokemon_menu
     input4 = gets.chomp
     Encounter.find(input3).update(nickname: input4)
     p Encounter.find(input3).nickname
+    p "changed name"
     system "clear"
     pokemon_menu
   when "3"

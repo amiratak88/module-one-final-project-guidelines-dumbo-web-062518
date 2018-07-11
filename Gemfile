@@ -6,4 +6,5 @@ gem "sqlite3"
 gem "pry"
 gem "require_all"
 gem "rest-client"
+gem 'tty-spinner'
 # gem "activesupport"
