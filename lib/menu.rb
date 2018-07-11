@@ -161,17 +161,27 @@ def battle_menu(found_pokemon, pokemon_hp, active_trainer)
 
   input.select('What do you want to do?', cycle: true) do |menu|
 
-    menu.choice 'Catch pokemon', -> do
-      if pokemon_hp <= 0
-        p "#{found_pokemon.name} is dead, you can't catch it."
-      else
-        active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+    if pokemon_hp > 0
+      menu.choice 'Catch pokemon', -> do
+          active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+      end
+
+      menu.choice 'Attack pokemon', -> do
+        active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
       end
     end
-
-    menu.choice 'Attack pokemon', -> do
-      active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
-    end
+    
+    # menu.choice 'Catch pokemon', -> do
+    #   if pokemon_hp <= 0
+    #     p "#{found_pokemon.name} is dead, you can't catch it."
+    #   else
+    #     active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+    #   end
+    # end
+    #
+    # menu.choice 'Attack pokemon', -> do
+    #   active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
+    # end
 
     menu.choice 'Run away!!!', -> do
       clear_screen
