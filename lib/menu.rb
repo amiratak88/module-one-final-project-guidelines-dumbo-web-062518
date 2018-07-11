@@ -15,6 +15,7 @@ def start_game
   trainer_name = gets.chomp
   if Trainer.all.find_by(name: trainer_name)
     active_trainer = Trainer.all.find_by(name: trainer_name)
+    active_trainer.go_to_location
     clear_screen
     p "Welcome back, #{active_trainer.name}!"
     visit = Visit.where("trainer_id=#{active_trainer.id}").last
@@ -22,9 +23,9 @@ def start_game
     location_menu(active_trainer)
   else
     active_trainer = Trainer.create(name: trainer_name)
+    active_trainer.go_to_location
     clear_screen
     p "Welcome #{active_trainer.name}!"
-    active_trainer.go_to_location
     location_menu(active_trainer)
   end
 end

@@ -10,12 +10,3 @@ def populate_pokemon
 end
 
 populate_pokemon
-
-peter = Trainer.create(name: "Peter")
-dan = Trainer.create(name: "Dan")
-anthony = Trainer.create(name: "Anthony")
-
-flatiron = Location.create(name: "Flatiron School")
-central_park = Location.create(name: "Central Park")
-statue_of_liberty = Location.create(name: "Statue of Liberty")
-moma = Location.create(name: "MoMA")
