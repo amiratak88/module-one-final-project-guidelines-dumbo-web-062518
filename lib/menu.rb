@@ -15,7 +15,6 @@ def start_game
   trainer_name = gets.chomp
   if Trainer.all.find_by(name: trainer_name)
     active_trainer = Trainer.all.find_by(name: trainer_name)
-    active_trainer.go_to_location
     clear_screen
     p "Welcome back, #{active_trainer.name}!"
     visit = Visit.where("trainer_id=#{active_trainer.id}").last
@@ -126,7 +125,14 @@ def pokemon_menu(active_trainer)
     menu.choice 'Release a pokemon', -> do
       p "Enter a pokemon id to release."
       input2 = gets.chomp
+      clear_screen
+      if Encounter.find(input2).nickname == nil
+        "You released #{Pokemon.find(Encounter.find(input2).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(input2).pokemon_id).name}!"
+      else
+        p "You released #{Encounter.find(input2).nickname}.  Bye #{Encounter.find(input2).nickname}!"
+      end
       Encounter.destroy(input2)
+      active_trainer.encounters.reload
       trainer_menu(active_trainer)
     end
 
