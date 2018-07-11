@@ -68,6 +68,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
   end
 
   def battle_pokemon(found_pokemon, pokemon_hp)
+    clear_screen
     attack_pokemon = rand(1..500)
     pokemon_hp -= attack_pokemon
     p "You attacked #{found_pokemon.name}"
