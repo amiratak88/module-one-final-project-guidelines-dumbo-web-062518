@@ -43,7 +43,9 @@ def profile_option(active_trainer, menu)
 end
 
 def location_menu(active_trainer)
-  p "You are at the: #{Location.find($current_location.id).name}"
+  my_location = Location.find($current_location.id).name
+  p "You are at #{my_location}"
+  p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
   input = TTY::Prompt.new
 
   input.select("What do you want to do?", cycle: true) do |menu|
@@ -151,6 +153,7 @@ def pokemon_menu(active_trainer)
     end
 
     menu.choice 'Go back', -> do
+      clear_screen
       trainer_menu(active_trainer)
     end
   end
@@ -162,7 +165,7 @@ def battle_menu(found_pokemon, pokemon_hp, active_trainer)
   input.select('What do you want to do?', cycle: true) do |menu|
 
     if pokemon_hp > 0
-      menu.choice 'Catch pokemon', -> do
+      menu.choice 'Throw Pokeball', -> do
           active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
       end
 

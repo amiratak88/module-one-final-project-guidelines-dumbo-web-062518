@@ -12,7 +12,7 @@ class Location <ActiveRecord::Base
   end
 
   def self.fetch_weather(lat, lon)
-    self.fetch_location(lat, lon)["weather"][0]["main"]
+    self.fetch_location(lat, lon)["weather"][0]["description"]
   end
 
 end
