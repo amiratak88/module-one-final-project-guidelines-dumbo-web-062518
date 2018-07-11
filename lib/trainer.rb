@@ -21,7 +21,6 @@ class Trainer < ActiveRecord::Base
 
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
-      binding.pry
       p "We couldn't find that location. Sorry! Please try again, maybe being more specific."
       location_menu(active_trainer)
     else
@@ -135,9 +134,15 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     # self.encounters.map {|encounter| encounter.id}
     self.encounters.each do |encounter|
       if encounter.nickname == nil
+        p "<========================>"
         p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id}"
+        p "#{Pokemon.find(encounter.pokemon_id).types}"
+        Pokemon.find(encounter.pokemon_id).display_image_small
       else
+        p "<========================>"
         p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id} - #{encounter.nickname}"
+        p "#{Pokemon.find(encounter.pokemon_id).types}"
+        Pokemon.find(encounter.pokemon_id).display_image_small
       end
     end
   end
