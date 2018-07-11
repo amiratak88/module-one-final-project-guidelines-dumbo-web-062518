@@ -38,7 +38,13 @@ class Trainer < ActiveRecord::Base
     Location.find_by name: location_name
   end
 
-  
+  # def look_for_pokemon
+    #generates random pokemon from array
+    # found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
+    # p "A wild #{found_pokemon.name} has appeared!"
+    # catch_pokemon(found_pokemon)
+    # Encounter.all
+  # end
 def catch_pokemon(found_pokemon, pokemon_hp)
   hp_percent = pokemon_hp
     catch_percent = 0
