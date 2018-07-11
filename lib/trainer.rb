@@ -22,7 +22,8 @@ class Trainer < ActiveRecord::Base
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
       binding.pry
-      p "Please try again!"
+      p "We couldn't find that location. Sorry! Please try again, maybe being more specific."
+      location_menu(active_trainer)
     else
       new_location = parse_api(location_api(input))["candidates"][0]["name"]
         Location.find_or_create_by(name: new_location)
@@ -55,12 +56,14 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     end
     if catch_percent >= pokemon_hp
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
+      system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
       spinner.auto_spin # Automatic animation with default interval
       sleep(2) # Perform task
       spinner.stop("You caught #{found_pokemon.name}!") # Stop animation
       # p "You caught #{found_pokemon.name}!"
     else
+      system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
       spinner.auto_spin # Automatic animation with default interval
       sleep(2) # Perform task
@@ -92,6 +95,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     p pokemon_hp
     system "clear"
     p "You attacked #{found_pokemon.name}"
+    found_pokemon.display_image
     pokemon_status(found_pokemon, pokemon_hp)
     battle_pokemon_menu
     input = gets.chomp
@@ -108,7 +112,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       system "clear"
       location_menu
     end
-    quit_option(input)
+    quit_option(input, self)
   end
 
   def my_pokemon
