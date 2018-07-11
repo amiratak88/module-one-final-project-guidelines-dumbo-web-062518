@@ -3,7 +3,7 @@ class Trainer < ActiveRecord::Base
   has_many :encounters, through: :visits
   has_many :visits
 
-  def go_to_location(location_name = "Flatiron School New York")
+  def go_to_location(location_name = "WeWork Dumbo")
     v = display_location(location_name)
     Visit.create(location_id: v.id, trainer_id: self.id)
     $current_location = v
@@ -49,7 +49,12 @@ class Trainer < ActiveRecord::Base
 def catch_pokemon(found_pokemon, pokemon_hp)
     catch_percent = 0
     3.times do |catch|
-      catch_percent += rand(1..300)
+      rand_num = rand(200..400)
+      if rand_num > 390
+        catch_percent = 1000
+      else
+        catch_percent += rand(200..400)
+      end
     end
     if catch_percent >= pokemon_hp
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
