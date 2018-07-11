@@ -45,6 +45,7 @@ class Trainer < ActiveRecord::Base
     # catch_pokemon(found_pokemon)
     # Encounter.all
   # end
+
 def catch_pokemon(found_pokemon, pokemon_hp)
   hp_percent = pokemon_hp
     catch_percent = 0
@@ -108,7 +109,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       system "clear"
       location_menu
     end
-    quit_option(input)
+    quit_option(input, self)
   end
 
   def my_pokemon
