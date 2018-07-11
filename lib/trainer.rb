@@ -107,13 +107,15 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     self.encounters.each do |encounter|
       if encounter.nickname == nil
         p "<========================>"
-        p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id}"
-        p "#{Pokemon.find(encounter.pokemon_id).types}"
+        p "ID| Name"
+        p "#{encounter.id} | #{Pokemon.find(encounter.pokemon_id).name}"
+        p "Types: #{Pokemon.find(encounter.pokemon_id).types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       else
         p "<========================>"
-        p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id} - #{encounter.nickname}"
-        p "#{Pokemon.find(encounter.pokemon_id).types}"
+        p "ID| Name | Nickname"
+        p "#{encounter.id}| #{Pokemon.find(encounter.pokemon_id).name}: '#{encounter.nickname}'"
+        p "Types: #{Pokemon.find(encounter.pokemon_id).types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       end
     end
