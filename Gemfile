@@ -8,4 +8,6 @@ gem "require_all"
 gem "rest-client"
 gem 'tty-spinner'
 gem 'catpix'
+gem 'tty-prompt'
+
 # gem "activesupport"
