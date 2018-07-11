@@ -92,13 +92,13 @@ end
 def trainer_menu(active_trainer)
 
   input = TTY::Prompt.new
-  input.select('Hello trainer #{active_trainer.name}', cycle: true) do |menu|
+  input.select("Hello trainer #{active_trainer.name}", cycle: true) do |menu|
     menu.choice 'View pokemon', -> do
       pokemon_menu(active_trainer)
     end
 
     menu.choice 'View visited locations', -> do
-      isits = Visit.where("trainer_id=#{active_trainer.id}")
+      visits = Visit.where("trainer_id=#{active_trainer.id}")
       uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
       uniq_locations.uniq.each { |location| p location }
       # clear_screen
@@ -112,6 +112,7 @@ def trainer_menu(active_trainer)
 end
 
 def pokemon_menu(active_trainer)
+  clear_screen
   pokemon = active_trainer.my_pokemon
 
   p "Here are your pokemon:"
@@ -130,11 +131,13 @@ def pokemon_menu(active_trainer)
     menu.choice 'Rename a pokemon', -> do
       p "Enter a pokemon id to rename"
       input3 = gets.chomp
-      p "Enter a name for the pokemon #{Pokemon.find(Encounter.find(input3).pokemon_id).name}"
+      pkmn = Encounter.find(input3)
+      p "Enter a name for the pokemon #{Pokemon.find(pkmn.pokemon_id).name}"
       input4 = gets.chomp
-      Encounter.find(input3).update(nickname: input4)
-      p Encounter.find(input3).nickname
-      p "Changed name"
+      pkmn.nickname = input4
+      pkmn.save
+      active_trainer.encounters.reload
+      p "Changed name to #{pkmn.nickname}"
       # clear_screen
       pokemon_menu(active_trainer)
     end
