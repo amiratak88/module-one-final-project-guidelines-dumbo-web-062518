@@ -4,6 +4,13 @@ end
 
 def start_game
   clear_screen
+  Catpix::print_image "./media/pokemon_logo.png",
+    :limit_x => 0.5,
+    :limit_y => 0.5,
+    :center_x => true,
+    :center_y => false,
+    :resolution => "auto"
+
   puts "Enter your trainer's name"
   trainer_name = gets.chomp
   if Trainer.all.find_by(name: trainer_name)
