@@ -76,11 +76,13 @@ def trainer_menu
     system "clear"
     pokemon_menu
   when "2"
+    system "clear"
     visits = Visit.where("trainer_id=#{$trainer.id}")
     uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
     uniq_locations.uniq.each { |location| p location }
     trainer_menu
   when "3"
+    system "clear"
     location_menu
   end
 end
