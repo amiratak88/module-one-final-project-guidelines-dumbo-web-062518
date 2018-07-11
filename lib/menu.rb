@@ -66,12 +66,17 @@ def encounter_menu(active_trainer)
 
   input.select('What do you want to do?', cycle: true) do |menu|
     menu.choice 'Catch pokemon', -> do
-      active_trainer.catch_pokemon(found_pokemon)
+      active_trainer.catch_pokemon(found_pokemon, 1000)
+    end
+
+    menu.choice 'Battle Pokemon!', -> do
+      active_trainer.battle_pokemon(found_pokemon, 1000)
     end
 
     menu.choice 'Run away!', -> do
       location_menu(active_trainer)
     end
+
 
     quit_option(active_trainer, menu)
   end

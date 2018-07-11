@@ -68,7 +68,9 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
       spinner.auto_spin # Automatic animation with default interval
       sleep(2) # Perform task
-      spinner.stop("#{found_pokemon.name} got away!") # Stop animation
+      spinner.stop("#{found_pokemon.name} popped out") # Stop animation
+      battle_pokemon_menu
+      battle_pokemon(found_pokemon, hp_percent)
       # p "#{found_pokemon.name} got away!"
     end
   end
@@ -93,27 +95,36 @@ def catch_pokemon(found_pokemon, pokemon_hp)
   def battle_pokemon(found_pokemon, pokemon_hp)
     attack_pokemon = rand(1..500)
     pokemon_hp -= attack_pokemon
-    p pokemon_hp
-    system "clear"
     p "You attacked #{found_pokemon.name}"
     found_pokemon.display_image
     pokemon_status(found_pokemon, pokemon_hp)
     battle_pokemon_menu
-    input = gets.chomp
-    case input
-    when "1"
-      if pokemon_hp < 0
-        p "#{found_pokemon.name} is dead, you can't catch it."
-      else
-        self.catch_pokemon(found_pokemon, pokemon_hp)
+    battle_actions(found_pokemon, pokemon_hp)
+  end
+
+  def battle_actions(found_pokemon, pokemon_hp)
+    input = TTY::Prompt.new
+
+    input.select('What do you want to do?', cycle: true) do |menu|
+
+      menu.choice 'Catch pokemon', -> do
+        if pokemon_hp < 0
+          p "#{found_pokemon.name} is dead, you can't catch it."
+        else
+          self.catch_pokemon(found_pokemon, pokemon_hp)
+        end
       end
-    when "2"
-      self.battle_pokemon(found_pokemon, pokemon_hp)
-    when "3"
-      system "clear"
-      location_menu
+
+      menu.choice 'Attack pokemon', -> do
+        self.battle_pokemon(found_pokemon, pokemon_hp)
+      end
+
+      menu.choice 'Run away!!!', -> do
+        system "clear"
+        location_menu
+      end
+    # quit_option(input, self)
     end
-    quit_option(input, self)
   end
 
   def my_pokemon
