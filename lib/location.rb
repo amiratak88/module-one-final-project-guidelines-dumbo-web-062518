@@ -3,7 +3,7 @@ class Location <ActiveRecord::Base
   has_many :encounters, through: :visits
   has_many :visits
 
-  def self.fetch_location(lat, lon)
+  def self.fetch_location(lat = active_trainer.latitude,lon = active_trainer.longitude)
     api_key = 'da3fa0ef987e099623458219b705d9fe'
     # url = "http://api.openweathermap.org/data/2.5/weather?q=#{location}&appid=#{api_key}"
     url = "https://api.openweathermap.org/data/2.5/weather?lat=#{lat}&lon=#{lon}&appid=#{api_key}"
