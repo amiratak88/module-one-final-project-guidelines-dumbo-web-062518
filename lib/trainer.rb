@@ -38,18 +38,10 @@ class Trainer < ActiveRecord::Base
     Location.find_by name: location_name
   end
 
-  # def look_for_pokemon
-    #generates random pokemon from array
-    # found_pokemon = Pokemon.find_by(pokedex_id: rand(1..15))
-    # p "A wild #{found_pokemon.name} has appeared!"
-    # catch_pokemon(found_pokemon)
-    # Encounter.all
-  # end
-
   def catch_pokemon(found_pokemon)
     hp_percent = 100
     catch_percent = 0
-    trainer = Trainer.find($trainer.id)
+    # trainer = Trainer.find($trainer.id)
     3.times do |catch|
       catch_percent += rand(1..75)
       # p "catch_percent #{catch_percent}"
@@ -74,17 +66,6 @@ class Trainer < ActiveRecord::Base
     self.encounters.map {|encounter| Pokemon.find(encounter.pokemon_id).name}
   end
 
-  def pick_trainer
-    puts "Enter your trainer's name"
-    trainer_name = gets.chomp
-    if Trainer.all.find_by name: trainer_name
-      location_menu
-    else
-      Trainer.create(name: trainer_name)
-      location_menu
-    end
-  end
-
   def my_pokemon_with_id
     # self.encounters.map {|encounter| encounter.id}
     self.encounters.each do |encounter|
@@ -95,11 +76,4 @@ class Trainer < ActiveRecord::Base
       end
     end
   end
-
-  # def current_location_by_visit
-  #   Visit.last.id
-  # end
-  #
-  # def current_visit
-  # end
 end
