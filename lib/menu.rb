@@ -83,8 +83,10 @@ def trainer_menu(active_trainer)
     visits = Visit.where("trainer_id=#{active_trainer.id}")
     uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
     uniq_locations.uniq.each { |location| p location }
+    clear_screen
     trainer_menu(active_trainer)
   when "3"
+    clear_screen
     location_menu(active_trainer)
   end
 end

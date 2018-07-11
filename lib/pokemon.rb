@@ -25,9 +25,20 @@ class Pokemon <ActiveRecord::Base
     pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
   end
 
-  def display
-  end
-
+  # def location_api(input)
+  #   location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
+  # end
+  # #&placeid=ChIJOwg_06VPwokRYv534QaPC8g
+  #
+  # def display_location(input)
+  #   if parse_api(location_api(input))["candidates"] == []
+  #     binding.pry
+  #     p "Please try again!"
+  #   else
+  #     new_location = parse_api(location_api(input))["candidates"][0]["name"]
+  #       Location.find_or_create_by(name: new_location)
+  #   end
+  # end
 
 
   def self.generate_pokemon

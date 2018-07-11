@@ -4,10 +4,35 @@ class Trainer < ActiveRecord::Base
   has_many :visits
 
   def go_to_location(location_name = "Flatiron School")
-    v = find_location(location_name)
+    v = display_location(location_name)
     Visit.create(location_id: v.id, trainer_id: self.id)
     $current_location = v
   end
+
+  def location_api(input)
+    location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
+  end
+
+  def parse_api(place_api)
+    JSON.parse(place_api.body)
+  end
+
+  #&placeid=ChIJOwg_06VPwokRYv534QaPC8g
+
+  def display_location(input)
+    if parse_api(location_api(input))["candidates"] == []
+      binding.pry
+      p "Please try again!"
+    else
+      new_location = parse_api(location_api(input))["candidates"][0]["name"]
+        Location.find_or_create_by(name: new_location)
+    end
+  end
+
+#Our API key for google  AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0
+
+# https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJOwg_06VPwokRYv534QaPC8g&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0
+
 
   def find_location(location_name)
     Location.find_by name: location_name
