@@ -37,7 +37,11 @@ class Trainer < ActiveRecord::Base
       spinner.stop("You caught #{found_pokemon.name}!") # Stop animation
       # p "You caught #{found_pokemon.name}!"
     else
-      p "#{found_pokemon.name} got away!"
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
+      spinner.auto_spin # Automatic animation with default interval
+      sleep(2) # Perform task
+      spinner.stop("#{found_pokemon.name} got away!") # Stop animation
+      # p "#{found_pokemon.name} got away!"
     end
   end
 
