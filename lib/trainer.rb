@@ -3,7 +3,7 @@ class Trainer < ActiveRecord::Base
   has_many :encounters, through: :visits
   has_many :visits
 
-  def go_to_location(location_name = "Flatiron School")
+  def go_to_location(location_name = "Flatiron School New York")
     v = display_location(location_name)
     Visit.create(location_id: v.id, trainer_id: self.id)
     $current_location = v
@@ -54,6 +54,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       spinner.auto_spin
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out")
+      found_pokemon.display_image
       battle_actions(found_pokemon, pokemon_hp)
     end
   end
@@ -97,7 +98,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
 
       menu.choice 'Run away!!!', -> do
         system "clear"
-        location_menu
+        location_menu(active_trainer)
       end
     # quit_option(input, self)
     end
