@@ -10,7 +10,7 @@ class Trainer < ActiveRecord::Base
   end
 
   def location_api(input)
-    location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
+    location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name,geometry&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
   end
 
   def parse_api(place_api)
@@ -23,9 +23,20 @@ class Trainer < ActiveRecord::Base
       location_menu(active_trainer)
     else
       new_location = parse_api(location_api(input))["candidates"][0]["name"]
+      # new_location = parse_api(location_api(input))["candidates"][0]["formatted_address"].split(',')
         Location.find_or_create_by(name: new_location)
     end
   end
+
+  def latitude(input)
+    parse_api(location_api(input))["candidates"][0]['geometry']['location']['lat']
+  end
+
+  def longitude(input)
+    parse_api(location_api(input))["candidates"][0]['geometry']['location']['lng']
+  end
+
+
 
 #Our API key for google  AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0
 
