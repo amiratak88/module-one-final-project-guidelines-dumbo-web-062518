@@ -43,7 +43,13 @@ class Trainer < ActiveRecord::Base
 
   def my_pokemon_with_id
     # self.encounters.map {|encounter| encounter.id}
-    self.encounters.each {|encounter| p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id}"}
+    self.encounters.each do |encounter|
+      if encounter.nickname == nil
+        p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id}"
+      else
+        p "#{Pokemon.find(encounter.pokemon_id).name} - #{encounter.id} - #{encounter.nickname}"
+      end
+    end
   end
 
   # def current_location_by_visit

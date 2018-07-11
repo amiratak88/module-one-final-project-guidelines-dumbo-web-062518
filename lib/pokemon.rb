@@ -9,13 +9,26 @@ class Pokemon <ActiveRecord::Base
     JSON.parse(pokemon_api.body)
   end
 
+  def pokeapi_method
+    parse_api(get_api)
+  end
+
   def display_name
-    parse_api(get_api)["name"].titleize
+    pokeapi_method["name"].titleize
   end
 
   def display_id
-    parse_api(get_api)["id"]
+    pokeapi_method["id"]
   end
+
+  def display_types
+    pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+  end
+
+  def display
+  end
+
+
 
   def self.generate_pokemon
   #generates random pokemon from array
