@@ -39,7 +39,6 @@ class Trainer < ActiveRecord::Base
 
 
 #Our API key for google  AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0
-
 # https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJOwg_06VPwokRYv534QaPC8g&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0
 
 
@@ -66,7 +65,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out")
       found_pokemon.display_image
-      battle_actions(found_pokemon, pokemon_hp)
+      battle_menu(found_pokemon, pokemon_hp, self)
     end
   end
 
@@ -87,32 +86,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     found_pokemon.display_image
     pokemon_status(found_pokemon, pokemon_hp)
     # battle_pokemon_menu
-    battle_actions(found_pokemon, pokemon_hp)
-  end
-
-  def battle_actions(found_pokemon, pokemon_hp)
-    input = TTY::Prompt.new
-
-    input.select('What do you want to do?', cycle: true) do |menu|
-
-      menu.choice 'Catch pokemon', -> do
-        if pokemon_hp <= 0
-          p "#{found_pokemon.name} is dead, you can't catch it."
-        else
-          self.catch_pokemon(found_pokemon, pokemon_hp)
-        end
-      end
-
-      menu.choice 'Attack pokemon', -> do
-        self.battle_pokemon(found_pokemon, pokemon_hp)
-      end
-
-      menu.choice 'Run away!!!', -> do
-        system "clear"
-        location_menu(active_trainer)
-      end
-    # quit_option(input, self)
-    end
+    battle_menu(found_pokemon, pokemon_hp, self)
   end
 
   def my_pokemon

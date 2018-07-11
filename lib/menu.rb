@@ -72,12 +72,12 @@ def encounter_menu(active_trainer)
   input = TTY::Prompt.new
 
   input.select('What do you want to do?', cycle: true) do |menu|
-    menu.choice 'Catch pokemon', -> do
-      active_trainer.catch_pokemon(found_pokemon, 1000)
-    end
+    # menu.choice 'Catch pokemon', -> do
+    #   active_trainer.catch_pokemon(found_pokemon, 1000)
+    # end
 
-    menu.choice 'Battle Pokemon!', -> do
-      active_trainer.battle_pokemon(found_pokemon, 1000)
+    menu.choice 'Fight!', -> do
+      battle_menu(found_pokemon, 1000, active_trainer)
     end
 
     menu.choice 'Run away!', -> do
@@ -152,6 +152,28 @@ def pokemon_menu(active_trainer)
 
     menu.choice 'Go back', -> do
       trainer_menu(active_trainer)
+    end
+  end
+end
+
+def battle_menu(found_pokemon, pokemon_hp, active_trainer)
+  input = TTY::Prompt.new
+
+  input.select('What do you want to do?', cycle: true) do |menu|
+
+    if pokemon_hp > 0
+      menu.choice 'Catch pokemon', -> do
+          active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+      end
+
+      menu.choice 'Attack pokemon', -> do
+        active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
+      end
+    end
+
+    menu.choice 'Run away!!!', -> do
+      clear_screen
+      location_menu(active_trainer)
     end
   end
 end
