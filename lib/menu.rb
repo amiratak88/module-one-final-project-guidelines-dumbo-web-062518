@@ -29,31 +29,9 @@ def quit_option(active_trainer, menu)
   end
 end
 
-<<<<<<< HEAD
-def encounter_menu(active_trainer)
-  found_pokemon = Pokemon.generate_pokemon
-  # trainer = Trainer.find($trainer.id)
-  p "What do you want to do?"
-  p "1. Catch Pokemon"
-  p "2. Battle Pokemon"
-  p "3. Run away!!!"
-  p "q. Quit"
-  input = gets.chomp
-  clear_screen
-  case input
-  when "1"
-    active_trainer.catch_pokemon(found_pokemon, 1000)
-    p "You caught #{found_pokemon.name}!"
-  when "2"
-    active_trainer.battle_pokemon(found_pokemon, 1000)
-  when "3"
-    clear_screen
-    location_menu(active_trainer)
-=======
 def profile_option(active_trainer, menu)
   menu.choice 'View your trainer profile', -> do
     trainer_menu(active_trainer)
->>>>>>> tty-prompt
   end
 end
 
@@ -126,40 +104,6 @@ def pokemon_menu(active_trainer)
 
   p "Here are your pokemon:"
   active_trainer.my_pokemon_with_id
-<<<<<<< HEAD
-  # pokemon.each {|pokemon| p "#{pokemon.id} - #{pokemon.name}"}
-  p "What do you want to do?"
-  p "1. Release a pokemon"
-  p "2. Rename a pokemon"
-  p "3. Go back."
-  input = gets.chomp
-  case input
-  when "1"
-    p "Enter a pokemon id to release."
-    input2 = gets.chomp
-    if Encounter.find(input2).nickname == nil
-      p "You released #{Pokemon.find(Encounter.find(input2).pokemon_id).name}."
-      p "Bye bye, #{Pokemon.find(Encounter.find(input2).pokemon_id).name}"
-    else
-      p "You released #{Encounter.find(input2).nickname}."
-      p "Bye bye, #{Encounter.find(input2).nickname}"
-    end
-    Encounter.destroy(input2)
-    trainer_menu(active_trainer)
-  when "2"
-    p "Enter a pokemon id to rename"
-    input3 = gets.chomp
-    p "Enter a name for the pokemon #{Pokemon.find(Encounter.find(input3).pokemon_id).name}"
-    input4 = gets.chomp
-    Encounter.find(input3).update(nickname: input4)
-    p Encounter.find(input3).nickname
-    p "Changed name"
-    clear_screen
-    pokemon_menu(active_trainer)
-  when "3"
-    clear_screen
-    trainer_menu(active_trainer)
-=======
 
   input = TTY::Prompt.new
   input.select('What do you want to do?', cycle: true) do |menu|
@@ -186,6 +130,5 @@ def pokemon_menu(active_trainer)
     menu.choice 'Go back', -> do
       trainer_menu(active_trainer)
     end
->>>>>>> tty-prompt
   end
 end
