@@ -25,6 +25,15 @@ class Pokemon <ActiveRecord::Base
     pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
   end
 
+  def display_image
+    Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+      :limit_x => 0.5,
+      :limit_y => 0.5,
+      :center_x => true,
+      :center_y => false,
+      :resolution => "high"
+  end
+
   # def location_api(input)
   #   location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
   # end
