@@ -47,15 +47,18 @@ def encounter_menu
   trainer = Trainer.find($trainer.id)
   p "What do you want to do?"
   p "1. Catch Pokemon"
-  p "2. Run away!!!"
+  p "2. Battle Pokemon"
+  p "3. Run away!!!"
   p "q. Quit"
   input = gets.chomp
   system "clear"
   case input
   when "1"
-    trainer.catch_pokemon(found_pokemon)
+    trainer.catch_pokemon(found_pokemon, 1000)
     # p "You caught #{found_pokemon.name}!"
   when "2"
+    trainer.battle_pokemon(found_pokemon, 1000)
+  when "3"
     system "clear"
     location_menu
   end
