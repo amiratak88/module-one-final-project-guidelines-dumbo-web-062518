@@ -72,12 +72,12 @@ def encounter_menu(active_trainer)
   input = TTY::Prompt.new
 
   input.select('What do you want to do?', cycle: true) do |menu|
-    menu.choice 'Catch pokemon', -> do
-      active_trainer.catch_pokemon(found_pokemon, 1000)
-    end
+    # menu.choice 'Catch pokemon', -> do
+    #   active_trainer.catch_pokemon(found_pokemon, 1000)
+    # end
 
-    menu.choice 'Battle Pokemon!', -> do
-      active_trainer.battle_pokemon(found_pokemon, 1000)
+    menu.choice 'Fight!', -> do
+      active_trainer.battle_actions(found_pokemon, 1000)
     end
 
     menu.choice 'Run away!', -> do

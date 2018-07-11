@@ -97,8 +97,8 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       end
 
       menu.choice 'Run away!!!', -> do
-        system "clear"
-        location_menu(active_trainer)
+        clear_screen
+        location_menu(self)
       end
     # quit_option(input, self)
     end
