@@ -80,10 +80,12 @@ def location_menu(active_trainer)
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       # clear_screen
       puts "Where do you want to go?"
-      active_trainer.go_to_location(gets.chomp)
+      input1 = gets.chomp
+      active_trainer.go_to_location(input1)
+
       # clear_screen
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input}[:spinner]", format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input1}[:spinner]", format: :spin_2)
       spinner.auto_spin
       sleep(3.5)
       spinner.stop("You have arrived!")
