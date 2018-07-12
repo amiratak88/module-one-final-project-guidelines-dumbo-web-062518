@@ -139,18 +139,18 @@ spinner.auto_spin
 populate_pokemon_from_array(pokemon_array)
 sleep(0.5)
 # p "Populating pokemon..."
-p "Done."
+puts "Done."
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather types...", format: :spin_2)
 spinner.auto_spin
 populate_weather_types
 sleep(0.5)
 # p "Populating weather types..."
-p "Done."
+puts "Done."
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather_pokemon...", format: :spin_2)
 spinner.auto_spin
 populate_weather_pokemon
 sleep(0.5)
 # p "Populating weather_pokemon..."
-p "Done."
+puts "Done."
