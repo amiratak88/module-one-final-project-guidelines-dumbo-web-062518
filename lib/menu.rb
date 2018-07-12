@@ -7,7 +7,7 @@ def start_game
   pid = fork{ exec 'afplay', './media/pokemon_opening.mp3' }
 
   clear_screen
-  Catpix::print_image "./media/pokemon_logo.png",
+  Catpix::print_image "./media/images/pokemon_logo.png",
     :limit_x => 0.5,
     :limit_y => 0.5,
     :center_x => true,
@@ -113,6 +113,12 @@ def encounter_menu(active_trainer)
 end
 
 def trainer_menu(active_trainer)
+  Catpix::print_image "./media/images/pokemon_trainer_1.png",
+    :limit_x => 0.75,
+    :limit_y => 0.75,
+    :center_x => false,
+    :center_y => false,
+    :resolution => "high"
   input = TTY::Prompt.new
   print "\n"
   input.select("Hello trainer #{active_trainer.name}!", cycle: true) do |menu|
@@ -126,8 +132,9 @@ def trainer_menu(active_trainer)
       visits = Visit.where("trainer_id=#{active_trainer.id}")
       clear_screen
       p "Here are the places you've been:"
-      uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
-      uniq_locations.uniq.each { |location| p location }
+      # uniq_locations = visits.map { |visit| p Location.find(visit.location_id)}
+      # uniq_locations.uniq.each { |location| p location}
+      active_trainer.my_locations_with_weather
       trainer_menu(active_trainer)
     end
 
@@ -146,8 +153,12 @@ def pokemon_menu(active_trainer)
   active_trainer.encounters.reload
 
   print "\n"
-  p "Here are your pokemon:"
-  active_trainer.my_pokemon_with_id
+  if active_trainer.my_pokemon_with_id == []
+    p "It doesn't look like you've caught any Pokemon yet!"
+  else
+    p "Here are your pokemon:"
+    active_trainer.my_pokemon_with_id
+  end
 
   input = TTY::Prompt.new
   print "\n"

@@ -3,7 +3,8 @@ def populate_pokemon
   until counter == 15 do
     new_mon = Pokemon.create(pokedex_id: counter)
     new_mon.name = new_mon.display_name
-    new_mon.types = new_mon.get_types
+    new_mon.type_1 = new_mon.insert_type_1
+    new_mon.type_2 = new_mon.insert_type_2
     new_mon.save
     counter += 1
   end

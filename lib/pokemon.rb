@@ -22,13 +22,27 @@ class Pokemon <ActiveRecord::Base
   end
 
   def display_types
-    type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    type_array = [self.type_1, self.type_2]
     if type_array[1] == nil
       "#{type_array[0]}"
     else
       "#{type_array[0]} & #{type_array[1]}"
     end
   end
+
+  def create_type_array
+    pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+  end
+
+  def insert_type_1
+    create_type_array[0]
+  end
+
+  def insert_type_2
+    create_type_array[1]
+  end
+
+
 
   def get_types
     type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
@@ -63,7 +77,7 @@ class Pokemon <ActiveRecord::Base
 
   def self.generate_pokemon
   #generates random pokemon from array
-    found_pokemon = self.find_by(pokedex_id: rand(1...15))
+    found_pokemon = self.find_by(pokedex_id: rand(1..15))
     p "A wild #{found_pokemon.name} has appeared!"
     found_pokemon.display_image
     found_pokemon

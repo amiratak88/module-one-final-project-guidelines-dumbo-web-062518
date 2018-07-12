@@ -5,7 +5,7 @@ class Trainer < ActiveRecord::Base
 
   def go_to_location(location_name = "WeWork Dumbo")
     v = display_location(location_name)
-    Visit.create(location_id: v.id, trainer_id: self.id)
+    Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
     $current_location = v
   end
 
@@ -110,15 +110,23 @@ def catch_pokemon(found_pokemon, pokemon_hp)
         p "<========================>"
         p "ID| Name"
         p "#{encounter.id} | #{Pokemon.find(encounter.pokemon_id).name}"
-        p "Types: #{Pokemon.find(encounter.pokemon_id).types}"
+        p "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       else
         p "<========================>"
         p "ID| Name | Nickname"
         p "#{encounter.id}| #{Pokemon.find(encounter.pokemon_id).name}: '#{encounter.nickname}'"
-        p "Types: #{Pokemon.find(encounter.pokemon_id).types}"
+        p "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       end
     end
   end
+
+def my_locations_with_weather
+  visits = Visit.where("trainer_id=#{self.id}")
+  uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
+  uniq_locations.uniq.each { |location| p location }
+end
+
+
 end
