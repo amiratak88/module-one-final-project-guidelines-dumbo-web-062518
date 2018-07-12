@@ -99,13 +99,19 @@ spinner = TTY::Spinner.new("[:spinner] Populating pokemon...", format: :spin_2)
 spinner.auto_spin
 populate_pokemon
 sleep(0.3)
+p "Populating pokemon..."
+p "Done."
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather types...", format: :spin_2)
 spinner.auto_spin
 populate_weather_types
 sleep(0.3)
+p "Populating weather types..."
+p "Done."
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather_pokemon...", format: :spin_2)
 spinner.auto_spin
 populate_weather_pokemon
 sleep(0.3)
+p "Done."
+p "Populating weather_pokemon..."
