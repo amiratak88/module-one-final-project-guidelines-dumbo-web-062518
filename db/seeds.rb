@@ -113,5 +113,5 @@ spinner = TTY::Spinner.new("[:spinner] Populating weather_pokemon...", format: :
 spinner.auto_spin
 populate_weather_pokemon
 sleep(0.3)
-p "Done."
 p "Populating weather_pokemon..."
+p "Done."
