@@ -1,5 +1,6 @@
-class Pokemon <ActiveRecord::Base
+class Pokemon < ActiveRecord::Base
   has_many :encounters
+  belongs_to :weather_pokemon
 
   def get_api
     pokemon_api = RestClient.get("http://pokeapi.co/api/v2/pokemon/#{self.pokedex_id}")
