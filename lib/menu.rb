@@ -192,16 +192,17 @@ else
         else
           puts "Invalid ID. Please enter a number.".red
         end
-        clear_screen
-        if Encounter.find(poke_id).nickname == nil
-          puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!".yellow
-        else
-          puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!".yellow
-        end
-        Encounter.destroy(poke_id)
-        active_trainer.encounters.reload
-        trainer_menu(active_trainer)
       end
+      
+      clear_screen
+      if Encounter.find(poke_id).nickname == nil
+        puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!".yellow
+      else
+        puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!".yellow
+      end
+      Encounter.destroy(poke_id)
+      active_trainer.encounters.reload
+      trainer_menu(active_trainer)
     end
 
     menu.choice 'Rename a pokemon', -> do
