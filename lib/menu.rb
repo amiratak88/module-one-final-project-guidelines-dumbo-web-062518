@@ -25,7 +25,7 @@ def start_game
     active_trainer = Trainer.all.find_by(name: trainer_name)
     clear_screen
     p "Welcome back, #{active_trainer.name}!"
-    visit = Visit.where("trainer_id=#{active_trainer.id}").last
+    visit = Visit.where("trainer_id='#{active_trainer.id}'").last
     $current_location = Location.find(visit.location_id)
     location_menu(active_trainer)
   else

@@ -57,7 +57,8 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       end
     end
     if catch_percent >= pokemon_hp
-      Encounter.create(pokemon_id: found_pokemon.id, visit_id: Visit.last.id)
+      Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
+      self.encounters.reload
       system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
       spinner.auto_spin
