@@ -33,6 +33,7 @@ def start_game
     active_trainer.go_to_location
     clear_screen
     puts "Welcome #{active_trainer.name}!".green
+    active_trainer.get_gender
     location_menu(active_trainer)
   end
 end
@@ -63,7 +64,7 @@ def location_menu(active_trainer)
   my_location = Location.find($current_location.id).name
   puts "\n"
   puts "You are at #{my_location}".yellow
-  puts "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}".yellow
+  puts "You see #{Location.fetch_weather($current_location.latitude, $current_location.longitude)}".yellow
   input = TTY::Prompt.new
 
   puts "\n"
@@ -84,7 +85,7 @@ def location_menu(active_trainer)
       active_trainer.go_to_location(input)
       # clear_screen
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input} ...[:spinner]", format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input}[:spinner]", format: :spin_2)
       spinner.auto_spin
       sleep(3.5)
       spinner.stop("You have arrived!")
@@ -122,7 +123,7 @@ def encounter_menu(active_trainer)
 end
 
 def trainer_menu(active_trainer)
-  Catpix::print_image "./media/images/pokemon_trainer_1.png",
+  Catpix::print_image "./media/images/#{active_trainer.gender}_sprite.png",
     :limit_x => 0.75,
     :limit_y => 0.75,
     :center_x => false,
