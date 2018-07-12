@@ -159,6 +159,7 @@ def pokemon_menu(active_trainer)
     puts "\n"
     input.select('Get out there and catch some Pokemon!'.yellow, cycle: true) do |menu|
     puts "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!".yellow
+    puts "\n"
     menu.choice 'Go back', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
@@ -193,7 +194,7 @@ else
           puts "Invalid ID. Please enter a number.".red
         end
       end
-      
+
       clear_screen
       if Encounter.find(poke_id).nickname == nil
         puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!".yellow

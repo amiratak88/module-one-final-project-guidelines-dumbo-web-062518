@@ -100,7 +100,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     attack_pokemon = rand(1..500)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
-    puts "You attacked #{found_pokemon.name}".red.blink
+    puts "You attacked #{found_pokemon.name}!".red.blink
     pokemon_status(found_pokemon, pokemon_hp)
     found_pokemon.display_image
     # battle_pokemon_menu
