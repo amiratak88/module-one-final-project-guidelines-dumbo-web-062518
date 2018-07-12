@@ -126,8 +126,8 @@ end
 
 def trainer_menu(active_trainer)
   Catpix::print_image "./media/images/#{active_trainer.gender}_sprite.png",
-    :limit_x => 0.75,
-    :limit_y => 0.75,
+    :limit_x => 0.6,
+    :limit_y => 0.6,
     :center_x => false,
     :center_y => false,
     :resolution => "high"
