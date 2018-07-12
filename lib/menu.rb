@@ -152,12 +152,21 @@ def pokemon_menu(active_trainer)
   pokemon = active_trainer.my_pokemon
   active_trainer.encounters.reload
   print "\n"
-  # if active_trainer.my_pokemon_with_id == []
-  #   p "It doesn't look like you've caught any Pokemon yet!"
-  # else
+  if active_trainer.encounters == []
+    input = TTY::Prompt.new
+    print "\n"
+    input.select('Get out there and catch some Pokemon!', cycle: true) do |menu|
+    p "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!"
+    menu.choice 'Go back', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      clear_screen
+      trainer_menu(active_trainer)
+    end
+  end
+else
+    # clear_screen
     p "Here are your pokemon:"
     active_trainer.my_pokemon_with_id
-  # end
 
   input = TTY::Prompt.new
   print "\n"
@@ -236,6 +245,7 @@ def pokemon_menu(active_trainer)
       trainer_menu(active_trainer)
     end
   end
+end
 end
 
 def battle_menu(found_pokemon, pokemon_hp, active_trainer)
