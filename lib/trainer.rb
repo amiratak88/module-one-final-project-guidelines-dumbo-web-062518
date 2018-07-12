@@ -95,25 +95,34 @@ class Trainer < ActiveRecord::Base
   end
 
   def pokemon_status(found_pokemon,pokemon_hp)
-    if pokemon_hp <= 0
-      puts "OMG you have killed #{found_pokemon.name}!".red
-    elsif pokemon_hp < 400
-      puts "#{found_pokemon.name} is weak!".green
-    elsif pokemon_hp < 600
-      puts "#{found_pokemon.name} is looking tired...".yellow
-    elsif pokemon_hp < 800
-      puts "#{found_pokemon.name} is pretty angry!".red
-    end
+    # if pokemon_run_chance > 85
+    #   puts "Pokemon got away"
+      if pokemon_hp <= 0
+        puts "OMG you have killed #{found_pokemon.name}!".red
+      elsif pokemon_hp < 400
+        puts "#{found_pokemon.name} is weak!".green
+      elsif pokemon_hp < 600
+        puts "#{found_pokemon.name} is looking tired...".yellow
+      elsif pokemon_hp < 800
+        puts "#{found_pokemon.name} is pretty angry!".red
+      end
+    # end
     pokemon_hp
   end
 
   def battle_pokemon(found_pokemon, pokemon_hp)
     clear_screen
+    pokemon_run_chance = 0
     attack_pokemon = rand(1..500)
+    pokemon_run_chance += rand(1..100)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
     puts "You attacked #{found_pokemon.name}!".red.blink
     pokemon_status(found_pokemon, pokemon_hp)
+    if pokemon_run_chance > 85
+      puts "Pokemon got away".magenta
+      location_menu(self)
+    end
     if pokemon_hp <= 0
       Catpix::print_image "./media/images/cubone_skull_crossbones.png",
         :limit_x => 0.5,
