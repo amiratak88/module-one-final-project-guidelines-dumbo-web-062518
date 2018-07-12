@@ -11,3 +11,10 @@ def populate_pokemon
 end
 
 populate_pokemon
+
+## cloud, clear, thunderstorm, snow, rain
+WeatherType.create(name: 'cloud')
+WeatherType.create(name: 'clear')
+WeatherType.create(name: 'thunderstorm')
+WeatherType.create(name: 'snow')
+WeatherType.create(name: 'rain')
