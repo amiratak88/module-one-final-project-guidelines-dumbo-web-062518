@@ -80,14 +80,14 @@ class Trainer < ActiveRecord::Base
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
       self.encounters.reload
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] The Pokeball is wiggling...".yellow, format: :spin_2)
       pokemon_run_chance += rand(1..100)
       spinner.auto_spin
       sleep(2)
       spinner.stop("You caught #{found_pokemon.name}!".green)
     else
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] The Pokeball is wiggling...".yellow, format: :spin_2)
       spinner.auto_spin
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out".yellow)
