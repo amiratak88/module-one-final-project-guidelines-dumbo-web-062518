@@ -220,7 +220,7 @@ else
           if !Encounter.where(id: poke_id).empty?
             is_valid_encounter_id = true
           else
-            p "Invalid ID. Please enter a number.".red
+            puts "Invalid ID. Please enter a number.".red
           end
         end
 
