@@ -121,10 +121,21 @@ def pokemon_menu(active_trainer)
 
     menu.choice 'Release a pokemon', -> do
       prompt = TTY::Prompt.new
-      poke_id = prompt.ask("Enter a pokemon id to release: ") do |q|
-        q.required true
-        q.validate(/^\d+$/, 'Invalid ID')
-        q.convert :int
+
+      is_valid_encounter_id = false
+
+      while is_valid_encounter_id == false
+        poke_id = prompt.ask("Enter a pokemon id to release: ") do |q|
+          q.required true
+          q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
+          q.convert :int
+        end
+
+        if !Encounter.where(id: poke_id).empty?
+          is_valid_encounter_id = true
+        else
+          p "Invalid ID. Please enter a number."
+        end
       end
 
       clear_screen
@@ -142,10 +153,20 @@ def pokemon_menu(active_trainer)
 
       prompt = TTY::Prompt.new
       result = prompt.collect do
-        poke_id = ask('Enter a pokemon id to rename: ') do |q|
-          q.convert :int
-          q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
-          q.required true
+        is_valid_encounter_id = false
+
+        while is_valid_encounter_id == false
+          poke_id = ask('Enter a pokemon id to rename: ') do |q|
+            q.convert :int
+            q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
+            q.required true
+          end
+
+          if !Encounter.where(id: poke_id).empty?
+            is_valid_encounter_id = true
+          else
+            p "Invalid ID. Please enter a number."
+          end
         end
 
         pkmn = Encounter.find(poke_id)
