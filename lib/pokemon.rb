@@ -32,7 +32,7 @@ class Pokemon < ActiveRecord::Base
   end
 
   def create_type_array
-    pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    pokeapi_method["types"].map {|type| type["type"]["name"]}
   end
 
   def insert_type_1
@@ -46,7 +46,7 @@ class Pokemon < ActiveRecord::Base
 
 
   def get_types
-    type_array = pokeapi_method["types"].map {|type| type["type"]["name"]}
+    type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
     type_string = String.new
     type_array.each_with_index do |type, index|
       if index == 0
@@ -76,22 +76,38 @@ class Pokemon < ActiveRecord::Base
       :resolution => "high"
   end
 
-  def self.generate_pokemon
-  #generates random pokemon from array
-    found_pokemon = self.find_by(pokedex_id: rand(1...15))
-    puts "A wild #{found_pokemon.name} has appeared!".green.blink
-    found_pokemon.display_image
-    found_pokemon
-    # catch_pokemon(found_pokemon)
-  # Encounter.all
-  end
+  # def self.generate_pokemon
+  # #generates random pokemon from array
+  #   found_pokemon = self.find_by(pokedex_id: rand(1...15))
+  #   p "A wild #{found_pokemon.name} has appeared!"
+  #   found_pokemon.display_image
+  #   found_pokemon
+  #   # catch_pokemon(found_pokemon)
+  # # Encounter.all
+  # end
 
   def self.type_match(weather)
-    matched = self.all.where("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
+    weather_id = WeatherType.find_by(name: weather).id
+    weather_pokemon = WeatherPokemon.all.where("weather_type_id == '#{weather_id}'")
+    found_pokemon_id = weather_pokemon.sample.pokemon_id
+    found_pokemon = self.find_by(pokedex_id: "#{found_pokemon_id}")
+    puts "A wild #{found_pokemon.name} has appeared!"
+    found_pokemon.display_image
+    found_pokemon
+    # matched = self.all.where("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
+    # p weather_pokemon
   end
 
   def self.no_type_match(weather)
-    non_matched = self.all.where.not("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
+    weather_id = WeatherType.find_by(name: weather).id
+    weather_pokemon = WeatherPokemon.all.where("weather_type_id != '#{weather_id}'")
+    found_pokemon_id = weather_pokemon.sample.pokemon_id
+    found_pokemon = self.find_by(pokedex_id: "#{found_pokemon_id}")
+    puts "A wild #{found_pokemon.name} has appeared!"
+    found_pokemon.display_image
+    found_pokemon
+    # p weather_pokemon
+    # non_matched = self.all.where.not("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
   end
 
   def self.generate_pokemon_type(weather)
@@ -100,10 +116,8 @@ class Pokemon < ActiveRecord::Base
     randomizer = rand(1..100)
     p randomizer
     if (randomizer > 70)
-      p "number is less than 30%"
       no_type_match(weather_downcase)
     else
-      p "number is greater than 30%"
       type_match(weather_downcase)
     end
   end
