@@ -50,7 +50,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     catch_percent = 0
     3.times do |catch|
       rand_num = rand(200..400)
-      if rand_num > 390
+      if rand_num >= 390
         catch_percent = 1000
       else
         catch_percent += rand(200..400)

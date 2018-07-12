@@ -151,14 +151,13 @@ def pokemon_menu(active_trainer)
   clear_screen
   pokemon = active_trainer.my_pokemon
   active_trainer.encounters.reload
-
   print "\n"
-  if active_trainer.my_pokemon_with_id == []
-    p "It doesn't look like you've caught any Pokemon yet!"
-  else
+  # if active_trainer.my_pokemon_with_id == []
+  #   p "It doesn't look like you've caught any Pokemon yet!"
+  # else
     p "Here are your pokemon:"
     active_trainer.my_pokemon_with_id
-  end
+  # end
 
   input = TTY::Prompt.new
   print "\n"
