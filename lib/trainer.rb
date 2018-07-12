@@ -105,21 +105,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
   end
 
   def my_pokemon_with_id
-    # self.encounters.map {|encounter| encounter.id}
     self.encounters.each do |encounter|
-      # if encounter.nickname == nil
-      #   puts "<========================>"
-      #   puts "ID| Name"
-      #   puts "#{encounter.id} | #{Pokemon.find(encounter.pokemon_id).name}"
-      #   puts "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
-      #   Pokemon.find(encounter.pokemon_id).display_image_small
-      # else
-      #   puts "<========================>"
-      #   puts "ID| Name | Nickname"
-      #   puts "#{encounter.id}| #{Pokemon.find(encounter.pokemon_id).name}: '#{encounter.nickname}'"
-      #   puts "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
-      #   Pokemon.find(encounter.pokemon_id).display_image_small
-      # end
 
       puts "<========================>"
       output = "ID: #{encounter.id} | Name: #{Pokemon.find(encounter.pokemon_id).name}"
