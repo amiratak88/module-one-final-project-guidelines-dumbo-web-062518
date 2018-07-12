@@ -96,14 +96,15 @@ class Pokemon < ActiveRecord::Base
 
   def self.generate_pokemon_type(weather)
     #if weather is raining, 70% more likely water pokemon will appear
+    weather_downcase = weather.downcase
     randomizer = rand(1..100)
     p randomizer
     if (randomizer > 70)
       p "number is less than 30%"
-      no_type_match(weather)
+      no_type_match(weather_downcase)
     else
       p "number is greater than 30%"
-      type_match(weather)
+      type_match(weather_downcase)
     end
   end
 
