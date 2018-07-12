@@ -61,9 +61,16 @@ def location_menu(active_trainer)
   system "killall afplay"
   pid = fork{ exec 'afplay', './media/palette_town_theme.mp3' }
   my_location = Location.find($current_location.id).name
+<<<<<<< HEAD
   puts "\n"
   puts "You are at #{my_location}".yellow
   puts "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}".yellow
+=======
+  print "\n"
+  p "You are at #{my_location}"
+  # binding.pry
+  p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
+>>>>>>> peter11
   input = TTY::Prompt.new
 
   puts "\n"
@@ -79,8 +86,17 @@ def location_menu(active_trainer)
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       # clear_screen
       puts "Where do you want to go?"
-      active_trainer.go_to_location(gets.chomp)
+      input = gets.chomp
+
+      active_trainer.go_to_location(input)
       # clear_screen
+      system "clear"
+      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input} ...[:spinner]", format: :spin_2)
+      spinner.auto_spin
+      sleep(3.5)
+      spinner.stop("You have arrived!")
+      sleep(1)
+      clear_screen
       location_menu(active_trainer)
     end
 
