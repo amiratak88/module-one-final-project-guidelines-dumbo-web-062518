@@ -10,7 +10,6 @@ class Trainer < ActiveRecord::Base
       puts "Please enter a new location."
       location_menu(active_trainer)
     else
-      p "I'm automatically traveling without your permission"
       Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
       $current_location = v
   end
@@ -26,12 +25,11 @@ end
 
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
-      puts "We couldn't find that location. Sorry! Please try again, maybe being more specific.".yellow
       clear_screen
-      location_menu(active_trainer)
+      puts "We couldn't find that location. Sorry! Please try again, maybe being more (or maybe less) specific.".yellow
+      location_menu(self)
     else
       new_location = parse_api(location_api(input))["candidates"][0]["name"]
-      p new_location
       # new_location = parse_api(location_api(input))["candidates"][0]["formatted_address"].split(',')
         Location.find_or_create_by(name: new_location)
     end

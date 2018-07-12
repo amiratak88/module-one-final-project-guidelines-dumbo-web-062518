@@ -61,16 +61,9 @@ def location_menu(active_trainer)
   system "killall afplay"
   pid = fork{ exec 'afplay', './media/palette_town_theme.mp3' }
   my_location = Location.find($current_location.id).name
-<<<<<<< HEAD
   puts "\n"
   puts "You are at #{my_location}".yellow
   puts "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}".yellow
-=======
-  print "\n"
-  p "You are at #{my_location}"
-  # binding.pry
-  p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
->>>>>>> peter11
   input = TTY::Prompt.new
 
   puts "\n"
