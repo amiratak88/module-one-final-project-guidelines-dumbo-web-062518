@@ -12,8 +12,8 @@ class Trainer < ActiveRecord::Base
       # p "I'm traveling without your permission"
       Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
       $current_location = v
+    end
   end
-end
 
   def location_api(input)
     location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name,geometry,formatted_address&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
@@ -65,7 +65,7 @@ end
     Location.find_by name: location_name
   end
 
-def catch_pokemon(found_pokemon, pokemon_hp)
+  def catch_pokemon(found_pokemon, pokemon_hp)
     catch_percent = 0
     3.times do |catch|
       rand_num = rand(200..400)
@@ -146,40 +146,38 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     end
   end
 
-def my_locations_with_weather
-  visits = Visit.where("trainer_id=#{self.id}")
-  uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
-  uniq_locations.uniq.each { |location| puts location }
-end
+  def my_locations_with_weather
+    visits = Visit.where("trainer_id=#{self.id}")
+    uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
+    uniq_locations.uniq.each { |location| puts location }
+  end
 
-def get_gender
-  input = TTY::Prompt.new
+  def get_gender
+    input = TTY::Prompt.new
 
-  puts "\n"
-  input.select('Please select the gender you are most comfortable with.'.blue, cycle: true) do |menu|
+    puts "\n"
+    input.select('Please select the gender you are most comfortable with.'.blue, cycle: true) do |menu|
 
-      menu.choice 'Male', -> do
+        menu.choice 'Male', -> do
+          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          self.gender = "Male"
+          self.save
+          clear_screen
+        end
+
+        menu.choice 'Female', -> do
+          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          self.gender = "Female"
+          self.save
+          clear_screen
+        end
+
+      menu.choice 'Non-Binary', -> do
         pid = fork{ exec 'afplay', './media/menu_select.wav' }
-        self.gender = "Male"
+        self.gender = "Non_binary"
         self.save
         clear_screen
       end
-
-      menu.choice 'Female', -> do
-        pid = fork{ exec 'afplay', './media/menu_select.wav' }
-        self.gender = "Female"
-        self.save
-        clear_screen
-      end
-
-    menu.choice 'Non-Binary', -> do
-      pid = fork{ exec 'afplay', './media/menu_select.wav' }
-      self.gender = "Non_binary"
-      self.save
-      clear_screen
     end
   end
-end
-
-
 end
