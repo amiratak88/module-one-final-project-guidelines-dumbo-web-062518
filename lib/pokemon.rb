@@ -91,7 +91,7 @@ class Pokemon < ActiveRecord::Base
     weather_pokemon = WeatherPokemon.all.where("weather_type_id == '#{weather_id}'")
     found_pokemon_id = weather_pokemon.sample.pokemon_id
     found_pokemon = self.find_by(pokedex_id: "#{found_pokemon_id}")
-    puts "A wild #{found_pokemon.name} has appeared!",yellow
+    puts "A wild #{found_pokemon.name} has appeared!".yellow
     found_pokemon.display_image
     found_pokemon
     # matched = self.all.where("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
