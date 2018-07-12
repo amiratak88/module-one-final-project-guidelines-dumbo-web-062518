@@ -46,7 +46,7 @@ class Pokemon < ActiveRecord::Base
 
 
   def get_types
-    type_array = pokeapi_method["types"].map {|type| type["type"]["name"].titleize}
+    type_array = pokeapi_method["types"].map {|type| type["type"]["name"]}
     type_string = String.new
     type_array.each_with_index do |type, index|
       if index == 0

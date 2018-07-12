@@ -5,9 +5,15 @@ class Trainer < ActiveRecord::Base
 
   def go_to_location(location_name = "WeWork Dumbo")
     v = display_location(location_name)
-    Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
-    $current_location = v
+    # binding.pry
+    if v["candidates"] == []
+      puts "Please enter a new location."
+      location_menu(active_trainer)
+    else
+      Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
+      $current_location = v
   end
+end
 
   def location_api(input)
     location_api = RestClient.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=#{input}&inputtype=textquery&fields=name,geometry&key=AIzaSyDe39-V51PVPYwaYc76j_H9qnmsvCGo-p0")
@@ -19,8 +25,9 @@ class Trainer < ActiveRecord::Base
 
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
-      puts "We couldn't find that location. Sorry! Please try again, maybe being more specific.".yellow
-      location_menu(active_trainer)
+      clear_screen
+      puts "We couldn't find that location. Sorry! Please try again, maybe being more (or maybe less) specific.".yellow
+      location_menu(self)
     else
       new_location = parse_api(location_api(input))["candidates"][0]["name"]
       # new_location = parse_api(location_api(input))["candidates"][0]["formatted_address"].split(',')
@@ -28,11 +35,11 @@ class Trainer < ActiveRecord::Base
     end
   end
 
-  def latitude(input)
+  def latitude(input = 0.00)
     parse_api(location_api(input))["candidates"][0]['geometry']['location']['lat']
   end
 
-  def longitude(input)
+  def longitude(input = 0.00)
     parse_api(location_api(input))["candidates"][0]['geometry']['location']['lng']
   end
 
