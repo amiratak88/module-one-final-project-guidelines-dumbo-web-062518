@@ -80,14 +80,14 @@ class Trainer < ActiveRecord::Base
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
       self.encounters.reload
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The Pokeball is wiggling...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
       pokemon_run_chance += rand(1..100)
       spinner.auto_spin
       sleep(2)
       spinner.stop("You caught #{found_pokemon.name}!".green)
     else
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The Pokeball is wiggling...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
       spinner.auto_spin
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out".yellow)
@@ -166,7 +166,7 @@ class Trainer < ActiveRecord::Base
   def my_locations_with_weather
     visits = Visit.where("trainer_id=#{self.id}")
     uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
-    uniq_locations.uniq.each { |location| puts location }
+    uniq_locations.uniq.each_with_index { |location, index| puts "#{index+1}. #{location}" }
   end
 
   def get_gender
