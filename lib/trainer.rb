@@ -114,7 +114,16 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
     puts "You attacked #{found_pokemon.name}!".red.blink
     pokemon_status(found_pokemon, pokemon_hp)
-    found_pokemon.display_image
+    if pokemon_hp <= 0
+      Catpix::print_image "./media/images/cubone_skull_crossbones.png",
+        :limit_x => 0.5,
+        :limit_y => 0.5,
+        :center_x => true,
+        :center_y => false,
+        :resolution => "high"
+    else
+      found_pokemon.display_image
+    end
     # battle_pokemon_menu
     battle_menu(found_pokemon, pokemon_hp, self)
   end
