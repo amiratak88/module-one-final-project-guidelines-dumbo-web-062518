@@ -147,6 +147,12 @@ def trainer_menu(active_trainer)
       # uniq_locations = visits.map { |visit| p Location.find(visit.location_id)}
       # uniq_locations.uniq.each { |location| p location}
       active_trainer.my_locations_with_weather
+
+      keypress = TTY::Prompt.new
+      keypress.keypress("Press any key to continue...")
+
+      clear_screen
+
       trainer_menu(active_trainer)
     end
 
