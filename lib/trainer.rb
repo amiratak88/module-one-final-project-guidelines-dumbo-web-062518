@@ -19,7 +19,7 @@ class Trainer < ActiveRecord::Base
 
   def display_location(input)
     if parse_api(location_api(input))["candidates"] == []
-      p "We couldn't find that location. Sorry! Please try again, maybe being more specific."
+      puts "We couldn't find that location. Sorry! Please try again, maybe being more specific.".yellow
       location_menu(active_trainer)
     else
       new_location = parse_api(location_api(input))["candidates"][0]["name"]
@@ -60,16 +60,16 @@ def catch_pokemon(found_pokemon, pokemon_hp)
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
       self.encounters.reload
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
       spinner.auto_spin
       sleep(2)
-      spinner.stop("You caught #{found_pokemon.name}!")
+      spinner.stop("You caught #{found_pokemon.name}!".green)
     else
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...", format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
       spinner.auto_spin
       sleep(2)
-      spinner.stop("#{found_pokemon.name} popped out")
+      spinner.stop("#{found_pokemon.name} popped out".yellow)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
     end
@@ -77,13 +77,13 @@ def catch_pokemon(found_pokemon, pokemon_hp)
 
   def pokemon_status(found_pokemon,pokemon_hp)
     if pokemon_hp <= 0
-      p "OMG you have killed #{found_pokemon.name}!"
+      puts "OMG you have killed #{found_pokemon.name}!".red
     elsif pokemon_hp < 400
-      p "#{found_pokemon.name} is weak!"
+      puts "#{found_pokemon.name} is weak!".green
     elsif pokemon_hp < 600
-      p "#{found_pokemon.name} is looking tired..."
+      puts "#{found_pokemon.name} is looking tired...".yellow
     elsif pokemon_hp < 800
-      p "#{found_pokemon.name} is pretty angry!"
+      puts "#{found_pokemon.name} is pretty angry!".red
     end
     pokemon_hp
   end
@@ -93,7 +93,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     attack_pokemon = rand(1..500)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
-    p "You attacked #{found_pokemon.name}"
+    puts "You attacked #{found_pokemon.name}".red.blink
     pokemon_status(found_pokemon, pokemon_hp)
     found_pokemon.display_image
     # battle_pokemon_menu
@@ -108,16 +108,16 @@ def catch_pokemon(found_pokemon, pokemon_hp)
     # self.encounters.map {|encounter| encounter.id}
     self.encounters.each do |encounter|
       if encounter.nickname == nil
-        p "<========================>"
-        p "ID| Name"
-        p "#{encounter.id} | #{Pokemon.find(encounter.pokemon_id).name}"
-        p "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
+        puts "<========================>"
+        puts "ID| Name"
+        puts "#{encounter.id} | #{Pokemon.find(encounter.pokemon_id).name}"
+        puts "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       else
-        p "<========================>"
-        p "ID| Name | Nickname"
-        p "#{encounter.id}| #{Pokemon.find(encounter.pokemon_id).name}: '#{encounter.nickname}'"
-        p "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
+        puts "<========================>"
+        puts "ID| Name | Nickname"
+        puts "#{encounter.id}| #{Pokemon.find(encounter.pokemon_id).name}: '#{encounter.nickname}'"
+        puts "Types: #{Pokemon.find(encounter.pokemon_id).display_types}"
         Pokemon.find(encounter.pokemon_id).display_image_small
       end
     end
@@ -126,7 +126,7 @@ def catch_pokemon(found_pokemon, pokemon_hp)
 def my_locations_with_weather
   visits = Visit.where("trainer_id=#{self.id}")
   uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
-  uniq_locations.uniq.each { |location| p location }
+  uniq_locations.uniq.each { |location| puts location }
 end
 
 

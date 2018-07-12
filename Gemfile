@@ -9,5 +9,6 @@ gem "rest-client"
 gem 'tty-spinner'
 gem 'catpix'
 gem 'tty-prompt'
+gem 'colorize', '~> 0.8.1'
 
 # gem "activesupport"
