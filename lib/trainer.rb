@@ -67,8 +67,9 @@ class Trainer < ActiveRecord::Base
 
   def catch_pokemon(found_pokemon, pokemon_hp)
     catch_percent = 0
+    pokemon_run_chance = 0
     3.times do |catch|
-      rand_num = rand(200..400)
+      rand_num = rand(150..250)
       if rand_num >= 390
         catch_percent = 1000
       else
@@ -80,6 +81,7 @@ class Trainer < ActiveRecord::Base
       self.encounters.reload
       system "clear"
       spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
+      pokemon_run_chance += rand(1..100)
       spinner.auto_spin
       sleep(2)
       spinner.stop("You caught #{found_pokemon.name}!".green)
@@ -89,6 +91,11 @@ class Trainer < ActiveRecord::Base
       spinner.auto_spin
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out".yellow)
+      pokemon_run_chance += rand(1..100)
+      if pokemon_run_chance > 85
+        puts "Pokemon got away".magenta
+        location_menu(self)
+      end
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
     end
