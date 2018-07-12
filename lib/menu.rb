@@ -92,7 +92,6 @@ end
 def encounter_menu(active_trainer)
   my_location = Location.find($current_location.id).name
   weather = Location.weather_pokemon(active_trainer.latitude(my_location), active_trainer.longitude(my_location)).downcase
-  p weather
   found_pokemon = Pokemon.generate_pokemon_type(weather)
 
   input = TTY::Prompt.new

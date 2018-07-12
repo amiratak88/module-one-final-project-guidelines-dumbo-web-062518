@@ -114,7 +114,6 @@ class Pokemon < ActiveRecord::Base
     #if weather is raining, 70% more likely water pokemon will appear
     weather_downcase = weather.downcase
     randomizer = rand(1..100)
-    p randomizer
     if (randomizer > 70)
       no_type_match(weather_downcase)
     else
