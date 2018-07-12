@@ -69,11 +69,11 @@ class Trainer < ActiveRecord::Base
     catch_percent = 0
     pokemon_run_chance = 0
     3.times do |catch|
-      rand_num = rand(150..250)
-      if rand_num >= 390
+      rand_num = rand(75..125)
+      if rand_num >= 120
         catch_percent = 1000
       else
-        catch_percent += rand(200..400)
+        catch_percent += rand_num
       end
     end
     if catch_percent >= pokemon_hp
