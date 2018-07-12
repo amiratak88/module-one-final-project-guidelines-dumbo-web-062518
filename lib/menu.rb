@@ -211,7 +211,7 @@ else
       end
       Encounter.destroy(poke_id)
       active_trainer.encounters.reload
-      trainer_menu(active_trainer)
+      pokemon_menu(active_trainer)
     end
 
     menu.choice 'Rename a pokemon', -> do
