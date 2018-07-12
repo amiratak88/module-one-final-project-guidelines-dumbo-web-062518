@@ -15,4 +15,8 @@ class Location <ActiveRecord::Base
     self.fetch_location(lat, lon)["weather"][0]["description"]
   end
 
+  def self.weather_pokemon(lat, lon)
+    self.fetch_location(lat, lon)["weather"][0]["main"]
+  end
+
 end
