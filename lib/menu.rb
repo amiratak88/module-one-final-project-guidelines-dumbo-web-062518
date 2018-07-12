@@ -15,8 +15,13 @@ def start_game
     :resolution => "auto"
 
   puts "\n\n\n\n\n"
+
+  login_user
+end
+
+def login_user
   prompt = TTY::Prompt.new
-  trainer_name = prompt.ask('What is your trainer\'s name?'.blue) do |q|
+  trainer_name = prompt.ask('What is your trainer\'s name? (case-sensitive)'.blue) do |q|
     q.required true
     q.convert :string
   end
@@ -148,8 +153,9 @@ def trainer_menu(active_trainer)
       # uniq_locations.uniq.each { |location| p location}
       active_trainer.my_locations_with_weather
 
+      puts "\n"
       keypress = TTY::Prompt.new
-      keypress.keypress("Press any key to continue...")
+      keypress.keypress("Press any key to continue...".blue.blink)
 
       clear_screen
 
