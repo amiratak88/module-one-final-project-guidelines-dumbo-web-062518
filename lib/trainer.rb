@@ -118,6 +118,7 @@ class Trainer < ActiveRecord::Base
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
     puts "You attacked #{found_pokemon.name}!".red.blink
+    sleep(1)
     pokemon_status(found_pokemon, pokemon_hp)
     if pokemon_run_chance > 85
       puts "Pokemon got away".magenta
