@@ -3,6 +3,9 @@ def clear_screen
 end
 
 def start_game
+  system "killall afplay"
+  pid = fork{ exec 'afplay', './media/pokemon_opening.mp3' }
+
   clear_screen
   Catpix::print_image "./media/pokemon_logo.png",
     :limit_x => 0.5,
@@ -31,6 +34,7 @@ end
 
 def quit_option(active_trainer, menu)
   menu.choice 'Quit', -> do
+    system "killall afplay"
     p "Thanks for playing!"
     exit
   end
@@ -38,11 +42,15 @@ end
 
 def profile_option(active_trainer, menu)
   menu.choice 'View your trainer profile', -> do
+    system "killall afplay"
+    pid = fork{ exec 'afplay', './media/pokemon_center.mp3' }
     trainer_menu(active_trainer)
   end
 end
 
 def location_menu(active_trainer)
+  system "killall afplay"
+  pid = fork{ exec 'afplay', './media/palette_town_theme.mp3' }
   my_location = Location.find($current_location.id).name
   p "You are at #{my_location}"
   p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
@@ -76,6 +84,8 @@ def encounter_menu(active_trainer)
   input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Fight!', -> do
+      system "killall afplay"
+      pid = fork{ exec 'afplay', './media/battle_vs_trainer.mp3' }
       battle_menu(found_pokemon, 1000, active_trainer)
     end
 
@@ -89,7 +99,6 @@ def encounter_menu(active_trainer)
 end
 
 def trainer_menu(active_trainer)
-
   input = TTY::Prompt.new
   input.select("Hello trainer #{active_trainer.name}", cycle: true) do |menu|
     menu.choice 'View pokemon', -> do
