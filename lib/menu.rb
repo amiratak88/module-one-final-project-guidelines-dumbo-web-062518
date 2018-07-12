@@ -226,7 +226,8 @@ else
 
         pkmn = Encounter.find(poke_id)
 
-        nickname = ask('Enter a name for the pokemon ' + Pokemon.find(pkmn.pokemon_id).name + ': ').blue do |q|
+        question = 'Enter a name for the pokemon ' + Pokemon.find(pkmn.pokemon_id).name + ': '
+        nickname = ask(question.blue) do |q|
           q.convert :string
           q.validate(/^[a-zA-Z0-9\s]*$/, 'Name must be alphanumeric.')
           q.required true
