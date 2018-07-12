@@ -72,9 +72,6 @@ def encounter_menu(active_trainer)
   input = TTY::Prompt.new
 
   input.select('What do you want to do?', cycle: true) do |menu|
-    # menu.choice 'Catch pokemon', -> do
-    #   active_trainer.catch_pokemon(found_pokemon, 1000)
-    # end
 
     menu.choice 'Fight!', -> do
       battle_menu(found_pokemon, 1000, active_trainer)
@@ -126,7 +123,7 @@ def pokemon_menu(active_trainer)
       prompt = TTY::Prompt.new
       poke_id = prompt.ask("Enter a pokemon id to release: ") do |q|
         q.required true
-        q.validate (/^\d+$/, 'Invalid ID')
+        q.validate(/^\d+$/, 'Invalid ID')
         q.convert :int
       end
 
@@ -142,16 +139,28 @@ def pokemon_menu(active_trainer)
     end
 
     menu.choice 'Rename a pokemon', -> do
-      p "Enter a pokemon id to rename"
-      input3 = gets.chomp
-      pkmn = Encounter.find(input3)
-      p "Enter a name for the pokemon #{Pokemon.find(pkmn.pokemon_id).name}"
-      input4 = gets.chomp
-      pkmn.nickname = input4
-      pkmn.save
+
+      prompt = TTY::Prompt.new
+      result = prompt.collect do
+        poke_id = ask('Enter a pokemon id to rename: ') do |q|
+          q.convert :int
+          q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
+          q.required true
+        end
+
+        pkmn = Encounter.find(poke_id)
+
+        nickname = ask('Enter a name for the pokemon ' + Pokemon.find(pkmn.pokemon_id).name + ': ') do |q|
+          q.convert :string
+          q.validate(/^[a-zA-Z0-9\s]*$/, 'Name must be alphanumeric.')
+          q.required true
+        end
+
+        pkmn.nickname = nickname
+        pkmn.save
+      end
+
       active_trainer.encounters.reload
-      p "Changed name to #{pkmn.nickname}"
-      # clear_screen
       pokemon_menu(active_trainer)
     end
 
