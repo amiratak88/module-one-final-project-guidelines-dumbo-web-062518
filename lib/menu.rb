@@ -14,8 +14,13 @@ def start_game
     :center_y => false,
     :resolution => "auto"
 
-  puts "Enter your trainer's name"
-  trainer_name = gets.chomp
+  print "\n\n\n\n\n"
+  prompt = TTY::Prompt.new
+  trainer_name = prompt.ask('What is your trainer\'s name?') do |q|
+    q.required true
+    q.convert :string
+  end
+
   if Trainer.all.find_by(name: trainer_name)
     active_trainer = Trainer.all.find_by(name: trainer_name)
     clear_screen
@@ -35,6 +40,8 @@ end
 def quit_option(active_trainer, menu)
   menu.choice 'Quit', -> do
     system "killall afplay"
+    pid = fork{ exec 'afplay', './media/menu_select.wav' }
+    clear_screen
     p "Thanks for playing!"
     exit
   end
@@ -43,7 +50,9 @@ end
 def profile_option(active_trainer, menu)
   menu.choice 'View your trainer profile', -> do
     system "killall afplay"
+    pid = fork{ exec 'afplay', './media/menu_select.wav' }
     pid = fork{ exec 'afplay', './media/pokemon_center.mp3' }
+    clear_screen
     trainer_menu(active_trainer)
   end
 end
@@ -52,18 +61,22 @@ def location_menu(active_trainer)
   system "killall afplay"
   pid = fork{ exec 'afplay', './media/palette_town_theme.mp3' }
   my_location = Location.find($current_location.id).name
+  print "\n"
   p "You are at #{my_location}"
   p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
   input = TTY::Prompt.new
 
+  print "\n"
   input.select("What do you want to do?", cycle: true) do |menu|
     menu.choice 'Look for pokemon', -> do
-      # clear_screen
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      clear_screen
       encounter_menu(active_trainer)
       location_menu(active_trainer)
     end
 
     menu.choice 'Go to another location', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       # clear_screen
       puts "Where do you want to go?"
       active_trainer.go_to_location(gets.chomp)
@@ -81,39 +94,47 @@ def encounter_menu(active_trainer)
 
   input = TTY::Prompt.new
 
+  print "\n"
   input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Fight!', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       system "killall afplay"
       pid = fork{ exec 'afplay', './media/battle_vs_trainer.mp3' }
       battle_menu(found_pokemon, 1000, active_trainer)
     end
 
     menu.choice 'Run away!', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      clear_screen
       location_menu(active_trainer)
     end
-
-
-    quit_option(active_trainer, menu)
   end
 end
 
 def trainer_menu(active_trainer)
   input = TTY::Prompt.new
-  input.select("Hello trainer #{active_trainer.name}", cycle: true) do |menu|
+  print "\n"
+  input.select("Hello trainer #{active_trainer.name}!", cycle: true) do |menu|
     menu.choice 'View pokemon', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       pokemon_menu(active_trainer)
     end
 
     menu.choice 'View visited locations', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       visits = Visit.where("trainer_id=#{active_trainer.id}")
+      clear_screen
+      p "Here are the places you've been:"
       uniq_locations = visits.map { |visit| Location.find(visit.location_id).name }
       uniq_locations.uniq.each { |location| p location }
-      # clear_screen
       trainer_menu(active_trainer)
     end
 
     menu.choice 'Go back', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      sleep(0.3)
+      clear_screen
       location_menu(active_trainer)
     end
   end
@@ -124,13 +145,16 @@ def pokemon_menu(active_trainer)
   pokemon = active_trainer.my_pokemon
   active_trainer.encounters.reload
 
+  print "\n"
   p "Here are your pokemon:"
   active_trainer.my_pokemon_with_id
 
   input = TTY::Prompt.new
+  print "\n"
   input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Release a pokemon', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       prompt = TTY::Prompt.new
 
       is_valid_encounter_id = false
@@ -161,7 +185,7 @@ def pokemon_menu(active_trainer)
     end
 
     menu.choice 'Rename a pokemon', -> do
-
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       prompt = TTY::Prompt.new
       result = prompt.collect do
         is_valid_encounter_id = false
@@ -197,6 +221,7 @@ def pokemon_menu(active_trainer)
     end
 
     menu.choice 'Go back', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
       trainer_menu(active_trainer)
     end
@@ -206,19 +231,23 @@ end
 def battle_menu(found_pokemon, pokemon_hp, active_trainer)
   input = TTY::Prompt.new
 
+  print "\n"
   input.select('What do you want to do?', cycle: true) do |menu|
 
     if pokemon_hp > 0
       menu.choice 'Throw Pokeball', -> do
-          active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+        active_trainer.catch_pokemon(found_pokemon, pokemon_hp)
       end
 
       menu.choice 'Attack pokemon', -> do
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
         active_trainer.battle_pokemon(found_pokemon, pokemon_hp)
       end
     end
 
     menu.choice 'Run away!!!', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
       location_menu(active_trainer)
     end
