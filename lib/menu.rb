@@ -1,4 +1,4 @@
-puts def clear_screen
+def clear_screen
   system "clear"
 end
 
@@ -14,9 +14,9 @@ def start_game
     :center_y => false,
     :resolution => "auto"
 
-  puts "\n\n\n\n\n"
+  print "\n\n\n\n\n"
   prompt = TTY::Prompt.new
-  trainer_name = prompt.ask('What is your trainer\'s name?'.blue) do |q|
+  trainer_name = prompt.ask('What is your trainer\'s name?') do |q|
     q.required true
     q.convert :string
   end
@@ -24,7 +24,7 @@ def start_game
   if Trainer.all.find_by(name: trainer_name)
     active_trainer = Trainer.all.find_by(name: trainer_name)
     clear_screen
-    puts "Welcome back, #{active_trainer.name}!".green
+    p "Welcome back, #{active_trainer.name}!"
     visit = Visit.where("trainer_id='#{active_trainer.id}'").last
     $current_location = Location.find(visit.location_id)
     location_menu(active_trainer)
@@ -32,7 +32,7 @@ def start_game
     active_trainer = Trainer.create(name: trainer_name)
     active_trainer.go_to_location
     clear_screen
-    puts "Welcome #{active_trainer.name}!".green
+    p "Welcome #{active_trainer.name}!"
     location_menu(active_trainer)
   end
 end
@@ -42,7 +42,7 @@ def quit_option(active_trainer, menu)
     system "killall afplay"
     pid = fork{ exec 'afplay', './media/menu_select.wav' }
     clear_screen
-    puts "Thanks for playing!"
+    p "Thanks for playing!"
     exit
   end
 end
@@ -61,13 +61,13 @@ def location_menu(active_trainer)
   system "killall afplay"
   pid = fork{ exec 'afplay', './media/palette_town_theme.mp3' }
   my_location = Location.find($current_location.id).name
-  puts "\n"
-  puts "You are at #{my_location}".yellow
-  puts "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}".yellow
+  print "\n"
+  p "You are at #{my_location}"
+  p "You see #{Location.fetch_weather(active_trainer.latitude(my_location), active_trainer.longitude(my_location))}"
   input = TTY::Prompt.new
 
-  puts "\n"
-  input.select("What do you want to do?".blue, cycle: true) do |menu|
+  print "\n"
+  input.select("What do you want to do?", cycle: true) do |menu|
     menu.choice 'Look for pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
@@ -79,17 +79,8 @@ def location_menu(active_trainer)
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       # clear_screen
       puts "Where do you want to go?"
-      input = gets.chomp
-
-      active_trainer.go_to_location(input)
+      active_trainer.go_to_location(gets.chomp)
       # clear_screen
-      system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input} ...[:spinner]", format: :spin_2)
-      spinner.auto_spin
-      sleep(3.5)
-      spinner.stop("You have arrived!")
-      sleep(1)
-      clear_screen
       location_menu(active_trainer)
     end
 
@@ -99,12 +90,15 @@ def location_menu(active_trainer)
 end
 
 def encounter_menu(active_trainer)
-  found_pokemon = Pokemon.generate_pokemon
+  my_location = Location.find($current_location.id).name
+  weather = Location.weather_pokemon(active_trainer.latitude(my_location), active_trainer.longitude(my_location)).downcase
+  p weather
+  found_pokemon = Pokemon.generate_pokemon_type(weather)
 
   input = TTY::Prompt.new
 
-  puts "\n"
-  input.select('What do you want to do?'.blue, cycle: true) do |menu|
+  print "\n"
+  input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Fight!', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
@@ -129,8 +123,8 @@ def trainer_menu(active_trainer)
     :center_y => false,
     :resolution => "high"
   input = TTY::Prompt.new
-  puts "\n"
-  input.select("Hello trainer #{active_trainer.name}!".blue, cycle: true) do |menu|
+  print "\n"
+  input.select("Hello trainer #{active_trainer.name}!", cycle: true) do |menu|
     menu.choice 'View pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       pokemon_menu(active_trainer)
@@ -140,7 +134,7 @@ def trainer_menu(active_trainer)
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       visits = Visit.where("trainer_id=#{active_trainer.id}")
       clear_screen
-      puts "Here are the places you've been:".yellow
+      p "Here are the places you've been:"
       # uniq_locations = visits.map { |visit| p Location.find(visit.location_id)}
       # uniq_locations.uniq.each { |location| p location}
       active_trainer.my_locations_with_weather
@@ -160,12 +154,12 @@ def pokemon_menu(active_trainer)
   clear_screen
   pokemon = active_trainer.my_pokemon
   active_trainer.encounters.reload
-  puts "\n"
+  print "\n"
   if active_trainer.encounters == []
     input = TTY::Prompt.new
-    puts "\n"
-    input.select('Get out there and catch some Pokemon!'.yellow, cycle: true) do |menu|
-    puts "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!".yellow
+    print "\n"
+    input.select('Get out there and catch some Pokemon!', cycle: true) do |menu|
+    p "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!"
     menu.choice 'Go back', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
@@ -174,12 +168,12 @@ def pokemon_menu(active_trainer)
   end
 else
     # clear_screen
-    puts "Here are your pokemon:".green
+    p "Here are your pokemon:"
     active_trainer.my_pokemon_with_id
 
   input = TTY::Prompt.new
-  puts "\n"
-  input.select('What do you want to do?'.blue, cycle: true) do |menu|
+  print "\n"
+  input.select('What do you want to do?', cycle: true) do |menu|
 
     menu.choice 'Release a pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
@@ -188,22 +182,22 @@ else
       is_valid_encounter_id = false
 
       while is_valid_encounter_id == false
-        poke_id = prompt.ask("Enter a pokemon id to release: ".blue) do |q|
+        poke_id = prompt.ask("Enter a pokemon id to release: ") do |q|
           q.required true
-          q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
+          q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
           q.convert :int
         end
 
         if !Encounter.where(id: poke_id).empty?
           is_valid_encounter_id = true
         else
-          puts "Invalid ID. Please enter a number.".red
+          p "Invalid ID. Please enter a number."
         end
         clear_screen
         if Encounter.find(poke_id).nickname == nil
-          puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!"
+          p "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!"
         else
-          puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!"
+          p "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!"
         end
         Encounter.destroy(poke_id)
         active_trainer.encounters.reload
@@ -220,14 +214,14 @@ else
         while is_valid_encounter_id == false
           poke_id = ask('Enter a pokemon id to rename: ') do |q|
             q.convert :int
-            q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
+            q.validate(/^\d+$/, 'Invalid ID. Please enter a number.')
             q.required true
           end
 
           if !Encounter.where(id: poke_id).empty?
             is_valid_encounter_id = true
           else
-            puts "Invalid ID. Please enter a number.".red
+            p "Invalid ID. Please enter a number."
           end
         end
 
@@ -235,7 +229,7 @@ else
 
         nickname = ask('Enter a name for the pokemon ' + Pokemon.find(pkmn.pokemon_id).name + ': ') do |q|
           q.convert :string
-          q.validate(/^[a-zA-Z0-9\s]*$/, 'Name must be alphanumeric.'.red)
+          q.validate(/^[a-zA-Z0-9\s]*$/, 'Name must be alphanumeric.')
           q.required true
         end
 
@@ -259,8 +253,8 @@ end
 def battle_menu(found_pokemon, pokemon_hp, active_trainer)
   input = TTY::Prompt.new
 
-  puts "\n"
-  input.select('What do you want to do?'.blue, cycle: true) do |menu|
+  print "\n"
+  input.select('What do you want to do?', cycle: true) do |menu|
 
     if pokemon_hp > 0
       menu.choice 'Throw Pokeball', -> do

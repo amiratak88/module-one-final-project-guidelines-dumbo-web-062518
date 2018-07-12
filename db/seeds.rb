@@ -53,8 +53,8 @@ def populate_pokemon_from_array(pokemon_array)
 end
 
 def populate_weather_types
-  ## cloud, clear, thunderstorm, snow, rain
-  WeatherType.create(name: 'cloud')
+  ## clouds, clear, thunderstorm, snow, rain
+  WeatherType.create(name: 'clouds')
   WeatherType.create(name: 'clear')
   WeatherType.create(name: 'thunderstorm')
   WeatherType.create(name: 'snow')
@@ -80,7 +80,7 @@ def populate_weather_pokemon
 end
 
 def get_pokemon_weather_type_id(pokemon_type)
-  ## cloud, clear, thunderstorm, snow, rain
+  ## clouds, clear, thunderstorm, snow, rain
   weather_type = String.new
 
   case pokemon_type.downcase
@@ -91,15 +91,15 @@ def get_pokemon_weather_type_id(pokemon_type)
   when 'flying'
     weather_type = 'clear'
   when 'poison'
-    weather_type = 'cloud'
+    weather_type = 'clouds'
   when 'ground'
-    weather_type = 'cloud'
+    weather_type = 'clouds'
   when 'rock'
-    weather_type = 'cloud'
+    weather_type = 'clouds'
   when 'bug'
     weather_type = 'clear'
   when 'ghost'
-    weather_type = 'cloud'
+    weather_type = 'clouds'
   when 'steel'
     weather_type = 'clear'
   when 'fire'
@@ -117,7 +117,7 @@ def get_pokemon_weather_type_id(pokemon_type)
   when 'dragon'
     weather_type = 'clear'
   when 'dark'
-    weather_type = 'cloud'
+    weather_type = 'clouds'
   when 'fairy'
     weather_type = 'clear'
   else
