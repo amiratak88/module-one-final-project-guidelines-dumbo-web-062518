@@ -166,31 +166,30 @@ def pokemon_menu(active_trainer)
     input = TTY::Prompt.new
     puts "\n"
     input.select('Get out there and catch some Pokemon!'.yellow, cycle: true) do |menu|
-    puts "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!".yellow
-    puts "\n"
-    menu.choice 'Go back', -> do
-      pid = fork{ exec 'afplay', './media/menu_select.wav' }
-      clear_screen
-      trainer_menu(active_trainer)
+      puts "It looks like you haven't caught any pokemon yet, #{active_trainer.name}!".yellow
+      menu.choice 'Go back', -> do
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+        clear_screen
+        trainer_menu(active_trainer)
+      end
     end
-  end
-else
+  else
     # clear_screen
     puts "Here are your pokemon:".yellow
     active_trainer.my_pokemon_with_id
 
-  input = TTY::Prompt.new
-  print "\n"
-  input.select('What do you want to do?'.blue, cycle: true) do |menu|
+    input = TTY::Prompt.new
+    print "\n"
+    input.select('What do you want to do?'.blue, cycle: true) do |menu|
 
-    menu.choice 'Release a pokemon', -> do
+      menu.choice 'Release a pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       prompt = TTY::Prompt.new
 
       is_valid_encounter_id = false
 
-      while is_valid_encounter_id == false
-        poke_id = prompt.ask("Enter a pokemon id to release: ".blue) do |q|
+        while is_valid_encounter_id == false
+          poke_id = prompt.ask("Enter a pokemon id to release: ".blue) do |q|
           q.required true
           q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
           q.convert :int
@@ -198,17 +197,23 @@ else
 
         if !Encounter.where(id: poke_id).empty?
           is_valid_encounter_id = true
+
+          if Encounter.find(poke_id).nickname == nil
+            puts "\n"
+            puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!".yellow
+          else
+            puts "\n"
+            puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!".yellow
+          end
         else
           puts "Invalid ID. Please enter a number.".red
         end
+
       end
 
+      sleep(2)
       clear_screen
-      if Encounter.find(poke_id).nickname == nil
-        puts "You released #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}.  Bye #{Pokemon.find(Encounter.find(poke_id).pokemon_id).name}!".yellow
-      else
-        puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!".yellow
-      end
+
       Encounter.destroy(poke_id)
       active_trainer.encounters.reload
       trainer_menu(active_trainer)
