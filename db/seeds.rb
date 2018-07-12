@@ -127,6 +127,27 @@ def get_pokemon_weather_type_id(pokemon_type)
   weather_type.downcase
 end
 
+# def populate_pokemon_types
+#   PokemonType.new(name: 'normal', weather_type_id: 2)
+#   PokemonType.new(name: 'fighting', weather_type_id: 2)
+#   PokemonType.new(name: 'flying', weather_type_id: 2)
+#   PokemonType.new(name: 'poison', weather_type_id: 1)
+#   PokemonType.new(name: 'ground', weather_type_id: 1)
+#   PokemonType.new(name: 'rock', weather_type_id: 1)
+#   PokemonType.new(name: 'bug', weather_type_id: 2)
+#   PokemonType.new(name: 'ghost', weather_type_id: 1)
+#   PokemonType.new(name: 'steel', weather_type_id: 2)
+#   PokemonType.new(name: 'fire', weather_type_id: 2)
+#   PokemonType.new(name: 'water', weather_type_id: 5)
+#   PokemonType.new(name: 'grass', weather_type_id: 2)
+#   PokemonType.new(name: 'electric', weather_type_id: 3)
+#   PokemonType.new(name: 'psychic', weather_type_id: 2)
+#   PokemonType.new(name: 'ice', weather_type_id: 4)
+#   PokemonType.new(name: 'dragon', weather_type_id: 2)
+#   PokemonType.new(name: 'dark', weather_type_id: 1)
+#   PokemonType.new(name: 'fairy', weather_type_id: 2)
+# end
+
 ##
 ## RUN METHODS
 ##
