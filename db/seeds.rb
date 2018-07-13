@@ -4,13 +4,14 @@
 
 # def populate_pokemon
 #   counter = 1
-#   until counter == 15 do
+#   until counter == 16 do
 #     new_mon = Pokemon.create(pokedex_id: counter)
 #     new_mon.name = new_mon.display_name
 #     new_mon.type_1 = new_mon.insert_type_1
 #     new_mon.type_2 = new_mon.insert_type_2
 #     new_mon.save
 #     counter += 1
+#     puts "#{new_mon.pokedex_id} | Pokemon: #{new_mon.name} - type1: #{new_mon.type_1} - type2: #{new_mon.type_2}"
 #   end
 # end
 
@@ -31,20 +32,20 @@
 #   p pokemon_array
 # end
 
-pokemon_array = [{:id=>1, :name=>"Bulbasaur", :pokedex_id=>1, :type_1=>"Poison", :type_2=>"Grass"},
- {:id=>2, :name=>"Ivysaur", :pokedex_id=>2, :type_1=>"Poison", :type_2=>"Grass"},
- {:id=>3, :name=>"Venusaur", :pokedex_id=>3, :type_1=>"Poison", :type_2=>"Grass"},
- {:id=>4, :name=>"Charmander", :pokedex_id=>4, :type_1=>"Fire", :type_2=>nil},
- {:id=>5, :name=>"Charmeleon", :pokedex_id=>5, :type_1=>"Fire", :type_2=>nil},
- {:id=>6, :name=>"Charizard", :pokedex_id=>6, :type_1=>"Flying", :type_2=>"Fire"},
- {:id=>7, :name=>"Squirtle", :pokedex_id=>7, :type_1=>"Water", :type_2=>nil},
- {:id=>8, :name=>"Wartortle", :pokedex_id=>8, :type_1=>"Water", :type_2=>nil},
- {:id=>9, :name=>"Blastoise", :pokedex_id=>9, :type_1=>"Water", :type_2=>nil},
- {:id=>10, :name=>"Caterpie", :pokedex_id=>10, :type_1=>"Bug", :type_2=>nil},
- {:id=>11, :name=>"Metapod", :pokedex_id=>11, :type_1=>"Bug", :type_2=>nil},
- {:id=>12, :name=>"Butterfree", :pokedex_id=>12, :type_1=>"Flying", :type_2=>"Bug"},
- {:id=>13, :name=>"Weedle", :pokedex_id=>13, :type_1=>"Poison", :type_2=>"Bug"},
- {:id=>14, :name=>"Kakuna", :pokedex_id=>14, :type_1=>"Poison", :type_2=>"Bug"}]
+# pokemon_array = [{:id=>1, :name=>"Bulbasaur", :pokedex_id=>1, :type_1=>"Poison", :type_2=>"Grass"},
+#  {:id=>2, :name=>"Ivysaur", :pokedex_id=>2, :type_1=>"Poison", :type_2=>"Grass"},
+#  {:id=>3, :name=>"Venusaur", :pokedex_id=>3, :type_1=>"Poison", :type_2=>"Grass"},
+#  {:id=>4, :name=>"Charmander", :pokedex_id=>4, :type_1=>"Fire", :type_2=>nil},
+#  {:id=>5, :name=>"Charmeleon", :pokedex_id=>5, :type_1=>"Fire", :type_2=>nil},
+#  {:id=>6, :name=>"Charizard", :pokedex_id=>6, :type_1=>"Flying", :type_2=>"Fire"},
+#  {:id=>7, :name=>"Squirtle", :pokedex_id=>7, :type_1=>"Water", :type_2=>nil},
+#  {:id=>8, :name=>"Wartortle", :pokedex_id=>8, :type_1=>"Water", :type_2=>nil},
+#  {:id=>9, :name=>"Blastoise", :pokedex_id=>9, :type_1=>"Water", :type_2=>nil},
+#  {:id=>10, :name=>"Caterpie", :pokedex_id=>10, :type_1=>"Bug", :type_2=>nil},
+#  {:id=>11, :name=>"Metapod", :pokedex_id=>11, :type_1=>"Bug", :type_2=>nil},
+#  {:id=>12, :name=>"Butterfree", :pokedex_id=>12, :type_1=>"Flying", :type_2=>"Bug"},
+#  {:id=>13, :name=>"Weedle", :pokedex_id=>13, :type_1=>"Poison", :type_2=>"Bug"},
+#  {:id=>14, :name=>"Kakuna", :pokedex_id=>14, :type_1=>"Poison", :type_2=>"Bug"}]
 
 def populate_pokemon_from_array(pokemon_array)
   pokemon_array.each do |pokemon|
@@ -151,6 +152,7 @@ end
 ##
 ## RUN METHODS
 ##
+require_relative 'pokemon_array'
 
 clear_screen
 
@@ -159,19 +161,16 @@ spinner.auto_spin
 # populate_pokemon
 populate_pokemon_from_array(pokemon_array)
 sleep(1)
-# p "Populating pokemon..."
 spinner.stop("Done.".green)
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather types...", format: :spin_2)
 spinner.auto_spin
 populate_weather_types
 sleep(1)
-# p "Populating weather types..."
 spinner.stop("Done.".green)
 
 spinner = TTY::Spinner.new("[:spinner] Populating weather_pokemon...", format: :spin_2)
 spinner.auto_spin
 populate_weather_pokemon
 sleep(1)
-# p "Populating weather_pokemon..."
 spinner.stop("Done.".green)
