@@ -109,12 +109,12 @@ class Trainer < ActiveRecord::Base
     # end
 
     roll_100 = rand(1..100)
-    chance = 50 # base percent chance
+    chance = 10 # base percent chance
     multiplier = 5
     chance = (((1000 - pokemon_hp) / 100) * multiplier) + chance # at 200hp, chance is 50%
 
     clear_screen
-    # puts "#{chance}% chance to catch - #{pokemon_hp} HP"
+    puts "#{chance}% chance to catch - #{pokemon_hp} HP"
     spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
     spinner.auto_spin
     sleep(2)
