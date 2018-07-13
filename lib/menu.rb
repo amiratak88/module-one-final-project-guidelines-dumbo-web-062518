@@ -206,35 +206,38 @@ def trainer_menu(active_trainer)
               else
                 puts "Invalid ID. Please enter a number.".red
               end
-<<<<<<< HEAD
+# <<<<<<< HEAD
+#
+            locale = Visit.all.select {|visit| visit.location_id == locale_id}
+            pokemon_array = []
+            the_list = []
+            locale.each do |visit|
+              the_list = Encounter.where(visit_id: visit.id)
+            end
+            the_list.each do |visit|
+              pokemon_array << "#{Pokemon.find(visit.pokemon_id).name}".green
+            end
+              end
+            clear_screen
+# =======
+
+#               select_sound
+#             end
 #
 #             locale = Visit.all.select {|visit| visit.location_id == locale_id}
 #             pokemon_array = []
-#             the_list = []
-#             locale.each do |visit|
-#               the_list = Encounter.where(visit_id: visit.id)
-#             end
-#             the_list.each do |visit|
-#               pokemon_array << "#{Pokemon.find(visit.pokemon_id).name}".green
-#             end
+#             the_list = locale.each do |visit|
+#               if Encounter.find_by(visit_id: visit.id) != nil
+#                 if Encounter.find_by(visit_id: visit.id).nickname == nil
+#                   pokemon_array << "#{Pokemon.find(Encounter.find_by(visit_id: visit.id).pokemon_id).name}"
+#                 else
+#                   pokemon_array << "#{Encounter.}"
 #               end
+#             end
+#
 #             clear_screen
-# =======
-
-              select_sound
-            end
-
-            locale = Visit.all.select {|visit| visit.location_id == locale_id}
-            pokemon_array = []
-            the_list = locale.each do |visit|
-              if Encounter.find_by(visit_id: visit.id) != nil
-                pokemon_array << "#{Pokemon.find(Encounter.find_by(visit_id: visit.id).pokemon_id).name}"
-              end
-            end
-
-            clear_screen
-
-# >>>>>>> 522edc78bc67c9d8994ff5795ab8d60cc892bb00
+#
+# # >>>>>>> 522edc78bc67c9d8994ff5795ab8d60cc892bb00
             if pokemon_array == []
               puts "It doesn't look like you've caught any Pokemon here!".magenta
             else
