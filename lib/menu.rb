@@ -83,17 +83,31 @@ def location_menu(active_trainer)
 
     menu.choice 'Go to another location', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
-      # clear_screen
-      puts "Where do you want to go?"
-      input1 = gets.chomp
-      active_trainer.go_to_location(input1)
 
-      # clear_screen
-      system "clear"
-      spinner = TTY::Spinner.new("[:spinner] Traveling to #{input1}[:spinner]", format: :spin_2)
+      prompt = TTY::Prompt.new
+
+      next_location = prompt.ask("Where do you want to go?".blue) do |q|
+        q.required true
+        q.convert :string
+      end
+
+      active_trainer.go_to_location(next_location)
+      # next_location_formatted = active_trainer.display_location(next_location)
+      next_location_formatted = active_trainer.get_location_name(next_location)
+
+      clear_screen
+      Catpix::print_image "./media/images/pokebike.gif",
+        :limit_x => 0.5,
+        :limit_y => 0.5,
+        :center_x => true,
+        :center_y => false,
+        :resolution => "auto"
+
+      puts "\n\n\n\n\n"
+      spinner = TTY::Spinner.new("[:spinner] Traveling to #{next_location_formatted} [:spinner]".magenta, format: :spin_2)
       spinner.auto_spin
       sleep(3.5)
-      spinner.stop("You have arrived!")
+      spinner.stop("You have arrived!".green)
       sleep(1)
       clear_screen
       location_menu(active_trainer)
@@ -202,8 +216,8 @@ def pokemon_menu(active_trainer)
 
       is_valid_encounter_id = false
 
-        while is_valid_encounter_id == false
-          poke_id = prompt.ask("Enter a pokemon id to release: ".blue) do |q|
+      while is_valid_encounter_id == false
+        poke_id = prompt.ask("Enter a pokemon id to release: ".blue) do |q|
           q.required true
           q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
           q.convert :int
@@ -222,7 +236,6 @@ def pokemon_menu(active_trainer)
         else
           puts "Invalid ID. Please enter a number.".red
         end
-
       end
 
       sleep(2)

@@ -9,10 +9,13 @@ class Trainer < ActiveRecord::Base
       puts "Please enter a new location."
       location_menu(active_trainer)
     else
-      # p "I'm traveling without your permission"
       Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
       $current_location = v
     end
+  end
+
+  def get_location_name(location)
+    new_location = display_location(location).name
   end
 
   def location_api(input)
