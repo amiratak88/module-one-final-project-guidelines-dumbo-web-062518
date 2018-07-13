@@ -115,6 +115,7 @@ class Trainer < ActiveRecord::Base
 
     clear_screen
     # puts "#{chance}% chance to catch - #{pokemon_hp} HP"
+    threw_too_hard(roll_100, found_pokemon)
     spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
     spinner.auto_spin
     sleep(2)
@@ -138,6 +139,20 @@ class Trainer < ActiveRecord::Base
       pokemon_runaway(found_pokemon)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
+    end
+  end
+
+  def threw_too_hard(roll_100, found_pokemon)
+    if roll_100 == 100
+      puts "You threw the pokeball too hard and #{found_pokemon.name} has died.".red.blink
+      Catpix::print_image "./media/images/cubone_skull_crossbones.png",
+        :limit_x => 0.5,
+        :limit_y => 0.5,
+        :center_x => true,
+        :center_y => false,
+        :resolution => "high"
+      sleep(2)
+      location_menu(self)
     end
   end
 
