@@ -242,21 +242,21 @@ class Trainer < ActiveRecord::Base
     input.select('Please select the gender you are most comfortable with.'.blue, cycle: true) do |menu|
 
         menu.choice 'Male', -> do
-          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          select_sound
           self.gender = "Male"
           self.save
           clear_screen
         end
 
         menu.choice 'Female', -> do
-          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          select_sound
           self.gender = "Female"
           self.save
           clear_screen
         end
 
       menu.choice 'Non-Binary', -> do
-        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+        select_sound
         self.gender = "Non_binary"
         self.save
         clear_screen
