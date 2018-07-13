@@ -213,11 +213,12 @@ def trainer_menu(active_trainer)
             the_list = []
             locale.each do |visit|
               the_list = Encounter.where(visit_id: visit.id)
-            end
-            the_list.each do |visit|
+              the_list.each do |visit|
+              # binding.pry
               pokemon_array << "#{Pokemon.find(visit.pokemon_id).name}".green
             end
               end
+            end
             clear_screen
 # =======
 
@@ -258,7 +259,7 @@ def trainer_menu(active_trainer)
           trainer_menu(active_trainer)
           end
         end
-<<<<<<< HEAD
+# <<<<<<< HEAD
       end
       menu.choice 'Go back', -> do
         pid = fork{ exec 'afplay', './media/menu_select.wav' }
@@ -266,25 +267,25 @@ def trainer_menu(active_trainer)
         clear_screen
         location_menu(active_trainer)
       end
-=======
-          # active_trainer.encounters.reload
-          # pokemon_menu(active_trainer)
-        end
-
-      # puts "\n"
-      # keypress = TTY::Prompt.new
-      # keypress.keypress("Press any key to continue...".blue.blink)
-      #
-      # clear_screen
-      #
-      trainer_menu(active_trainer)
-    end
-    menu.choice 'Go back', -> do
-      select_sound
-      sleep(0.3)
-      clear_screen
-      location_menu(active_trainer)
->>>>>>> 522edc78bc67c9d8994ff5795ab8d60cc892bb00
+# =======
+#           # active_trainer.encounters.reload
+#           # pokemon_menu(active_trainer)
+#         end
+#
+#       # puts "\n"
+#       # keypress = TTY::Prompt.new
+#       # keypress.keypress("Press any key to continue...".blue.blink)
+#       #
+#       # clear_screen
+#       #
+#       trainer_menu(active_trainer)
+#     end
+#     menu.choice 'Go back', -> do
+#       select_sound
+#       sleep(0.3)
+#       clear_screen
+#       location_menu(active_trainer)
+# >>>>>>> 522edc78bc67c9d8994ff5795ab8d60cc892bb00
     end
   trainer_menu(active_trainer)
   end
@@ -389,7 +390,7 @@ def pokemon_menu(active_trainer)
         pkmn.nickname = nickname
         pkmn.save
       end
-
+      clear_screen
       active_trainer.encounters.reload
       pokemon_menu(active_trainer)
     end
