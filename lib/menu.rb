@@ -6,6 +6,7 @@ def continue_key
   puts "\n"
   keypress = TTY::Prompt.new
   keypress.keypress("Press any key to continue...".blue.blink)
+  pid = fork{ exec 'afplay', './media/menu_select.wav' }
 end
 
 def start_game
@@ -31,6 +32,8 @@ def login_user
     q.required true
     q.convert :string
   end
+
+  pid = fork{ exec 'afplay', './media/menu_select.wav' }
 
   if Trainer.all.find_by(name: trainer_name)
     active_trainer = Trainer.all.find_by(name: trainer_name)
@@ -203,18 +206,20 @@ def trainer_menu(active_trainer)
               else
                 puts "Invalid ID. Please enter a number.".red
               end
+
+              pid = fork{ exec 'afplay', './media/menu_select.wav' }
             end
 
             locale = Visit.all.select {|visit| visit.location_id == locale_id}
             pokemon_array = []
             the_list = locale.each do |visit|
               if Encounter.find_by(visit_id: visit.id) != nil
-                # binding.pry
                 pokemon_array << "#{Pokemon.find(Encounter.find_by(visit_id: visit.id).pokemon_id).name}"
               end
             end
+
             clear_screen
-# binding.pry
+
             if pokemon_array == []
               puts "It doesn't look like you've caught any Pokemon here!".magenta
             else
@@ -295,6 +300,8 @@ def pokemon_menu(active_trainer)
           q.convert :int
         end
 
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+
         if !Encounter.where(id: poke_id).empty?
           is_valid_encounter_id = true
 
@@ -332,6 +339,8 @@ def pokemon_menu(active_trainer)
             q.required true
           end
 
+          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+
           if !Encounter.where(id: poke_id).empty?
             is_valid_encounter_id = true
           else
@@ -347,6 +356,8 @@ def pokemon_menu(active_trainer)
           q.validate(/^[a-zA-Z0-9\s]*$/, 'Name must be alphanumeric.')
           q.required true
         end
+
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
 
         pkmn.nickname = nickname
         pkmn.save
@@ -368,6 +379,8 @@ def pokemon_menu(active_trainer)
             q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
             q.required true
           end
+
+          pid = fork{ exec 'afplay', './media/menu_select.wav' }
 
           if !Encounter.where(id: poke_id).empty?
             is_valid_encounter_id = true
