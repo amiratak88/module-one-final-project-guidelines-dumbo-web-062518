@@ -68,26 +68,26 @@ class Trainer < ActiveRecord::Base
   def catch_pokemon(found_pokemon, pokemon_hp)
     catch_percent = 0
     pokemon_run_chance = 0
+    rand_num = rand(1..100)
     3.times do |catch|
-      rand_num = rand(75..125)
-      if rand_num >= 120
+      if rand_num >= 90
         catch_percent = 1000
       else
-        catch_percent += rand_num
+        catch_percent += rand(75..125)
       end
     end
     if catch_percent >= pokemon_hp
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
       self.encounters.reload
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
       pokemon_run_chance += rand(1..100)
       spinner.auto_spin
       sleep(2)
       spinner.stop("You caught #{found_pokemon.name}!".green)
     else
       system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
+      spinner = TTY::Spinner.new("[:spinner] Attempting to catch #{found_pokemon.name} ...".yellow, format: :spin_2)
       spinner.auto_spin
       sleep(2)
       spinner.stop("#{found_pokemon.name} popped out".yellow)
@@ -166,7 +166,7 @@ class Trainer < ActiveRecord::Base
   def my_locations_with_weather
     visits = Visit.where("trainer_id=#{self.id}")
     uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
-    uniq_locations.uniq.each_with_index { |location, index| puts "#{index+1}. #{location}" }
+    uniq_locations.uniq.each { |location| puts location }
   end
 
   def get_gender
