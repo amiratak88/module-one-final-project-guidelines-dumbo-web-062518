@@ -179,12 +179,13 @@ class Trainer < ActiveRecord::Base
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
     puts "You attacked #{found_pokemon.name}!".red
     sleep(1)
+    pokemon_runaway(found_pokemon)
     pokemon_status(found_pokemon, pokemon_hp)
     # if pokemon_run_chance > 85
     #   puts "Pokemon got away".magenta
     #   location_menu(self)
     # end
-    pokemon_runaway(found_pokemon)
+
 
     if pokemon_hp <= 0
       Catpix::print_image "./media/images/cubone_skull_crossbones.png",
