@@ -21,6 +21,21 @@ To run:
 
     ruby bin/run.rb
 
+## Screenshots
+!(media/screenshots/start.png)
+
+!(media/screenshots/create_trainer.png)
+
+!(media/screenshots/location.png)
+
+!(media/screenshots/pokemon_fight.png)
+
+!(media/screenshots/view_trainer.png)
+
+!(media/screenshots/view_locations.png)
+
+!(media/screenshots/view_pokemon.png)
+
 ## Project Requirements
 
 ### Option One - Data Analytics Project
