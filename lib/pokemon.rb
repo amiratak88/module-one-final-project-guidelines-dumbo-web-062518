@@ -59,7 +59,8 @@ class Pokemon < ActiveRecord::Base
   end
 
   def display_image
-    Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+    # Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+    Catpix::print_image "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/#{self.pokedex_id}.png",
       :limit_x => 0.5,
       :limit_y => 0.5,
       :center_x => false,
@@ -68,7 +69,8 @@ class Pokemon < ActiveRecord::Base
   end
 
   def display_image_small
-    Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+    # Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
+    Catpix::print_image "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/#{self.pokedex_id}.png",
       :limit_x => 0.1,
       :limit_y => 0.1,
       :center_x => false,
