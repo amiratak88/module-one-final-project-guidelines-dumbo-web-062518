@@ -2,6 +2,12 @@ def clear_screen
   system "clear"
 end
 
+def continue_key
+  puts "\n"
+  keypress = TTY::Prompt.new
+  keypress.keypress("Press any key to continue...".blue.blink)
+end
+
 def start_game
   system "killall afplay"
   pid = fork{ exec 'afplay', './media/pokemon_opening.mp3' }
@@ -79,6 +85,7 @@ def location_menu(active_trainer)
     menu.choice 'Look for pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
+      # binding.pry
       encounter_menu(active_trainer)
       location_menu(active_trainer)
     end
@@ -110,7 +117,7 @@ def location_menu(active_trainer)
       spinner.auto_spin
       sleep(3.5)
       spinner.stop("You have arrived!".green)
-      sleep(1)
+      continue_key
       clear_screen
       location_menu(active_trainer)
     end
@@ -169,9 +176,7 @@ def trainer_menu(active_trainer)
       # uniq_locations.uniq.each { |location| p location}
       active_trainer.my_locations_with_weather
 
-      puts "\n"
-      keypress = TTY::Prompt.new
-      keypress.keypress("Press any key to continue...".blue.blink)
+      continue_key
 
       clear_screen
 
@@ -235,6 +240,7 @@ def pokemon_menu(active_trainer)
             puts "\n"
             puts "You released #{Encounter.find(poke_id).nickname}.  Bye #{Encounter.find(poke_id).nickname}!".yellow
           end
+          continue_key
         else
           puts "Invalid ID. Please enter a number.".red
         end
