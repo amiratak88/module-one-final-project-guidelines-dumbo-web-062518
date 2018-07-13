@@ -129,12 +129,11 @@ class Trainer < ActiveRecord::Base
         puts "Great throw!".magenta.blink
       end
 
-      sleep(3)
+      continue_key
       clear_screen
     else
       spinner.stop("#{found_pokemon.name} popped out!".yellow)
       sleep(1.5)
-      clear_screen
       pokemon_runaway(found_pokemon)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
@@ -144,6 +143,7 @@ class Trainer < ActiveRecord::Base
   def pokemon_status(found_pokemon, pokemon_hp)
     if pokemon_hp <= 0
       puts "OMG you have killed #{found_pokemon.name}!".red.blink
+      continue_key
     elsif pokemon_hp < 400
       puts "#{found_pokemon.name} is weak!".green.blink
     elsif pokemon_hp < 600
@@ -188,7 +188,7 @@ class Trainer < ActiveRecord::Base
 
     if run_chance <= 15
       puts "#{found_pokemon.name} got away...".magenta.blink
-      sleep(3)
+      continue_key
       clear_screen
       location_menu(self)
     end
