@@ -1,8 +1,25 @@
-# Module One Final Project Guidelines
+# Pokemon Go Lite CLI
+created by [Anthony Chen](https://github.com/anthonychen1109), [Peter Hargarten](https://github.com/peterth3geek), and [Daniel Chung](https://github.com/dlchung)
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+This project is using Ruby and ActiveRecord, along with Sqlite3 for database management. Data is taken from 3 API sources including [Google Places API](https://developers.google.com/places/web-service/intro), [PokeAPI](https://pokeapi.co/), and [OpenWeatherMap](https://openweathermap.org/api).
 
-For your final project, we'll be building a Command Line database application.
+### Setup Instructions
+
+Install required gems:
+
+    bundle install
+
+You may get an error when installing the rmagick gem in Mac OSX High Sierra. Use this [fix](https://blog.francium.tech/installing-rmagick-on-osx-high-sierra-7ea71f57390d) or enter the commands below into terminal:
+
+    brew uninstall imagemagick
+    brew install imagemagick@6
+    export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+    brew link --force imagemagick@6
+    gem install rmagick
+
+To run:
+
+    ruby bin/run.rb
 
 ## Project Requirements
 
@@ -21,29 +38,3 @@ For your final project, we'll be building a Command Line database application.
 2. You should have a minimum of three models.
 3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
 4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
-
-### Brainstorming and Proposing a Project Idea
-
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. In example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
-
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
-
-## Instructions
-
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project.(2 minutes max)
-6. Prepare a presentation to follow your video.(3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
