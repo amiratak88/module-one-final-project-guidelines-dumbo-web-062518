@@ -148,9 +148,9 @@ class Trainer < ActiveRecord::Base
 
   def battle_pokemon(found_pokemon, pokemon_hp)
     clear_screen
-    pokemon_run_chance = 0
+    # pokemon_run_chance = 0
     attack_pokemon = rand(1..500)
-    pokemon_run_chance += rand(1..100)
+    # pokemon_run_chance += rand(1..100)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
     puts "You attacked #{found_pokemon.name}!".red
@@ -179,9 +179,10 @@ class Trainer < ActiveRecord::Base
   def pokemon_runaway(found_pokemon)
     run_chance = rand(1..100)
 
-    if run_chance <= 20
+    if run_chance <= 15
       puts "#{found_pokemon.name} got away...".magenta.blink
       sleep(3)
+      clear_screen
       location_menu(self)
     end
   end
