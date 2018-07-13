@@ -64,9 +64,13 @@ def populate_weather_types
   WeatherType.create(name: 'mist')
   WeatherType.create(name: 'smoke')
   WeatherType.create(name: 'haze')
+  WeatherType.create(name: 'sand, dust whirls')
   WeatherType.create(name: 'fog')
   WeatherType.create(name: 'sand')
   WeatherType.create(name: 'dust')
+  WeatherType.create(name: 'volcanic ash')
+  WeatherType.create(name: 'squalls')
+  WeatherType.create(name: 'tornado')
 end
 
 def populate_weather_pokemon
@@ -75,14 +79,22 @@ def populate_weather_pokemon
 
     #type_1
     weather_type = get_pokemon_weather_type_id(pokemon.type_1)
-    weather = WeatherType.find_by(name: weather_type)
-    WeatherPokemon.create(weather_type_id: weather.id, pokemon_id: pokemon.id)
+    weather_type.each do |weather|
+      weather_data = WeatherType.find_by(name: weather)
+      WeatherPokemon.create(weather_type_id: weather_data.id, pokemon_id: pokemon.id)
+    end
 
     #type_2
     if !pokemon.type_2.nil?
+      # weather_type = get_pokemon_weather_type_id(pokemon.type_2)
+      # weather = WeatherType.find_by(name: weather_type)
+      # WeatherPokemon.create(weather_type_id: weather.id, pokemon_id: pokemon.id)
+
       weather_type = get_pokemon_weather_type_id(pokemon.type_2)
-      weather = WeatherType.find_by(name: weather_type)
-      WeatherPokemon.create(weather_type_id: weather.id, pokemon_id: pokemon.id)
+      weather_type.each do |weather|
+        weather_data = WeatherType.find_by(name: weather)
+        WeatherPokemon.create(weather_type_id: weather_data.id, pokemon_id: pokemon.id)
+      end
     end
   end
 end
@@ -92,46 +104,46 @@ def get_pokemon_weather_type_id(pokemon_type)
 
   case pokemon_type.downcase
   when 'normal'
-    weather_type = 'clear'
+    weather_type = ['clear']
   when 'fighting'
-    weather_type = 'clear'
+    weather_type = ['clear']
   when 'flying'
-    weather_type = 'clear'
+    weather_type = ['clear', 'tornado']
   when 'poison'
-    weather_type = 'clouds'
+    weather_type = ['clouds', 'mist']
   when 'ground'
-    weather_type = 'dust'
+    weather_type = ['dust', 'sand', 'sand, dust whirls']
   when 'rock'
-    weather_type = 'clouds'
+    weather_type = ['clouds', 'sand', 'sand, dust whirls']
   when 'bug'
-    weather_type = 'clear'
+    weather_type = ['clear']
   when 'ghost'
-    weather_type = 'fog'
+    weather_type = ['mist', 'fog']
   when 'steel'
-    weather_type = 'clear'
+    weather_type = ['clear']
   when 'fire'
-    weather_type = 'clear'
+    weather_type = ['clear', 'volcanic ash', 'mist']
   when 'water'
-    weather_type = 'rain'
+    weather_type = ['rain', 'drizzle', 'squalls']
   when 'grass'
-    weather_type = 'clear'
+    weather_type = ['clear']
   when 'electric'
-    weather_type = 'thunderstorm'
+    weather_type = ['thunderstorm']
   when 'psychic'
-    weather_type = 'haze'
+    weather_type = ['haze', 'mist']
   when 'ice'
-    weather_type = 'snow'
+    weather_type = ['snow']
   when 'dragon'
-    weather_type = 'mist'
+    weather_type = ['mist']
   when 'dark'
-    weather_type = 'clouds'
+    weather_type = ['clouds', 'mist']
   when 'fairy'
-    weather_type = 'clear'
+    weather_type = ['clear']
   else
-    weather_type = 'clear'
+    weather_type = ['clear']
   end
 
-  weather_type.downcase
+  weather_type
 end
 
 # def populate_pokemon_types
