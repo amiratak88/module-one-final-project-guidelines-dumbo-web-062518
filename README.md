@@ -3,6 +3,16 @@ created by [Anthony Chen](https://github.com/anthonychen1109), [Peter Hargarten]
 
 This project is using Ruby and ActiveRecord, along with Sqlite3 for database management. Data is taken from 3 API sources including [Google Places API](https://developers.google.com/places/web-service/intro), [PokeAPI](https://pokeapi.co/), and [OpenWeatherMap](https://openweathermap.org/api).
 
+### Gems
+* tty-spinner
+  * Loading animations
+* tty-prompt
+  * Menu system and user inputs
+* catpix
+  * Image rendering
+* colorize
+  * Output coloring
+
 ### Setup Instructions
 
 Install required gems:
@@ -21,20 +31,21 @@ To run:
 
     ruby bin/run.rb
 
-## Screenshots
-!(media/screenshots/start.png)
+### Screenshots
 
-!(media/screenshots/create_trainer.png)
+!(./media/screenshots/start.png)
 
-!(media/screenshots/location.png)
+!(./media/screenshots/create_trainer.png)
 
-!(media/screenshots/pokemon_fight.png)
+!(./media/screenshots/location.png)
 
-!(media/screenshots/view_trainer.png)
+!(./media/screenshots/pokemon_fight.png)
 
-!(media/screenshots/view_locations.png)
+!(./media/screenshots/view_trainer.png)
 
-!(media/screenshots/view_pokemon.png)
+!(./media/screenshots/view_locations.png)
+
+!(./media/screenshots/view_pokemon.png)
 
 ## Project Requirements
 
