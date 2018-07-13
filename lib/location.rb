@@ -20,4 +20,14 @@ class Location <ActiveRecord::Base
     self.fetch_location(lat, lon)["weather"][0]["main"]
   end
 
+  def self.fetch_weather_icon(lat, lon)
+    weather_icon = self.fetch_location(lat, lon)["weather"][0]["icon"]
+    Catpix::print_image "http://openweathermap.org/img/w/#{weather_icon}.png",
+      :limit_x => 0.5,
+      :limit_y => 0.5,
+      :center_x => false,
+      :center_y => false,
+      :resolution => "high"
+  end
+
 end

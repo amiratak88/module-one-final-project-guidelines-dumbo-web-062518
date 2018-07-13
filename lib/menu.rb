@@ -70,6 +70,8 @@ def location_menu(active_trainer)
   puts "\n"
   puts "You are at #{my_location}".yellow
   puts "You see #{Location.fetch_weather($current_location.latitude, $current_location.longitude)}".yellow
+  puts "#{Location.fetch_weather_icon($current_location.latitude, $current_location.longitude)}".yellow
+  # puts "#{Location.fetch_weather_icon($current_location.latitude, $current_location.longitude))}"
   input = TTY::Prompt.new
 
   puts "\n"
