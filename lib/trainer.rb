@@ -69,36 +69,64 @@ class Trainer < ActiveRecord::Base
   end
 
   def catch_pokemon(found_pokemon, pokemon_hp)
-    catch_percent = 0
-    pokemon_run_chance = 0
-    rand_num = rand(1..100)
-    3.times do |catch|
-      if rand_num >= 90
-        catch_percent = 1000
-      else
-        catch_percent += rand(75..125)
-      end
-    end
-    if catch_percent >= pokemon_hp
+    # percent_display = 0
+    # catch_percent = 0
+    # pokemon_run_chance = 0
+    # rand_num = rand(1..100)
+    # 3.times do |catch|
+    #   if rand_num >= 90
+    #     catch_percent = 1000
+    #   else
+    #     catch_percent += rand(75..125)
+    #   end
+    # end
+    # binding.pry
+
+    # if catch_percent >= pokemon_hp
+    #   Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
+    #   self.encounters.reload
+    #   system "clear"
+    #   spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
+    #   pokemon_run_chance += rand(1..100)
+    #   spinner.auto_spin
+    #   sleep(2)
+    #   spinner.stop("You caught #{found_pokemon.name}!".green)
+    # else
+    #   system "clear"
+    #   spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
+    #   spinner.auto_spin
+    #   sleep(2)
+    #   spinner.stop("#{found_pokemon.name} popped out".yellow)
+    #
+    #   pokemon_run_chance += rand(1..100)
+    #   if pokemon_run_chance > 85
+    #     puts "Pokemon got away".magenta
+    #     location_menu(self)
+    #   end
+    #
+    #   found_pokemon.display_image
+    #   battle_menu(found_pokemon, pokemon_hp, self)
+    # end
+
+    roll_100 = rand(1..100)
+    chance = 50 # base percent chance
+    multiplier = 5
+    chance = (((1000 - pokemon_hp) / 100) * multiplier) + chance # at 200hp, chance is 50%
+
+    clear_screen
+    # puts "#{chance}% chance to catch - #{pokemon_hp} HP"
+    spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
+    spinner.auto_spin
+    sleep(2)
+
+    if roll_100 <= chance
       Encounter.create(pokemon_id: found_pokemon.id, visit_id: self.visits.last.id)
       self.encounters.reload
-      system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
-      pokemon_run_chance += rand(1..100)
-      spinner.auto_spin
-      sleep(2)
+
       spinner.stop("You caught #{found_pokemon.name}!".green)
     else
-      system "clear"
-      spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
-      spinner.auto_spin
-      sleep(2)
       spinner.stop("#{found_pokemon.name} popped out".yellow)
-      pokemon_run_chance += rand(1..100)
-      if pokemon_run_chance > 85
-        puts "Pokemon got away".magenta
-        location_menu(self)
-      end
+
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
     end
@@ -130,10 +158,10 @@ class Trainer < ActiveRecord::Base
     puts "You attacked #{found_pokemon.name}!".red
     sleep(1)
     pokemon_status(found_pokemon, pokemon_hp)
-    if pokemon_run_chance > 85
-      puts "Pokemon got away".magenta
-      location_menu(self)
-    end
+    # if pokemon_run_chance > 85
+    #   puts "Pokemon got away".magenta
+    #   location_menu(self)
+    # end
     if pokemon_hp <= 0
       Catpix::print_image "./media/images/cubone_skull_crossbones.png",
         :limit_x => 0.5,
