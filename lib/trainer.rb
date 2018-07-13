@@ -173,7 +173,7 @@ class Trainer < ActiveRecord::Base
   def battle_pokemon(found_pokemon, pokemon_hp)
     clear_screen
     # pokemon_run_chance = 0
-    attack_pokemon = rand(1..500)
+    attack_pokemon = rand(50..500)
     # pokemon_run_chance += rand(1..100)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
@@ -242,21 +242,21 @@ class Trainer < ActiveRecord::Base
     input.select('Please select the gender you are most comfortable with.'.blue, cycle: true) do |menu|
 
         menu.choice 'Male', -> do
-          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          select_sound
           self.gender = "Male"
           self.save
           clear_screen
         end
 
         menu.choice 'Female', -> do
-          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          select_sound
           self.gender = "Female"
           self.save
           clear_screen
         end
 
       menu.choice 'Non-Binary', -> do
-        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+        select_sound
         self.gender = "Non_binary"
         self.save
         clear_screen
