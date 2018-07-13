@@ -124,10 +124,17 @@ class Trainer < ActiveRecord::Base
       self.encounters.reload
 
       spinner.stop("You caught #{found_pokemon.name}!".green)
-      sleep(2)
+
+      if pokemon_hp == 1000
+        puts "Great throw!".magenta.blink
+      end
+
+      sleep(3)
+      clear_screen
     else
       spinner.stop("#{found_pokemon.name} popped out!".yellow)
-      sleep(2)
+      sleep(1.5)
+      clear_screen
       pokemon_runaway(found_pokemon)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
