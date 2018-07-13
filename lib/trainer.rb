@@ -136,6 +136,7 @@ class Trainer < ActiveRecord::Base
       spinner.stop("#{found_pokemon.name} popped out!".yellow)
       sleep(1.5)
       clear_screen
+      pokemon_status(found_pokemon, pokemon_hp)
       pokemon_runaway(found_pokemon)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
