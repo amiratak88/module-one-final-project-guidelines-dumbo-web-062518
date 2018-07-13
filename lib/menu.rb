@@ -173,13 +173,8 @@ def trainer_menu(active_trainer)
       visits = Visit.where("trainer_id=#{active_trainer.id}")
       clear_screen
       puts "Here are the places you've been:".yellow
-      # uniq_locations = visits.map { |visit| p Location.find(visit.location_id)}
-      # uniq_locations.uniq.each { |location| p location}
       active_trainer.my_locations_with_weather
 
-      continue_key
-
-      clear_screen
       input = TTY::Prompt.new
       puts "\n"
       input.select("What would you like to do?".blue, cycle: true) do |menu|
@@ -203,18 +198,18 @@ def trainer_menu(active_trainer)
               else
                 puts "Invalid ID. Please enter a number.".red
               end
-            end
 
             locale = Visit.all.select {|visit| visit.location_id == locale_id}
             pokemon_array = []
-            the_list = locale.each do |visit|
-              if Encounter.find_by(visit_id: visit.id) != nil
-                # binding.pry
-                pokemon_array << "#{Pokemon.find(Encounter.find_by(visit_id: visit.id).pokemon_id).name}"
-              end
+            the_list = []
+            locale.each do |visit|
+              the_list = Encounter.where(visit_id: visit.id)
             end
+            the_list.each do |visit|
+              pokemon_array << "#{Pokemon.find(visit.pokemon_id).name}".green
+            end
+              end
             clear_screen
-# binding.pry
             if pokemon_array == []
               puts "It doesn't look like you've caught any Pokemon here!".magenta
             else
@@ -225,37 +220,26 @@ def trainer_menu(active_trainer)
                 end
               end
             end
-
-            # pkmn.nickname = nickname
-            # pkmn.save
           end
         end
+
         menu.choice 'Go back', -> do
           pid = fork{ exec 'afplay', './media/menu_select.wav' }
           sleep(0.3)
           clear_screen
           trainer_menu(active_trainer)
+          end
         end
-          # active_trainer.encounters.reload
-          # pokemon_menu(active_trainer)
-        end
-
-      # puts "\n"
-      # keypress = TTY::Prompt.new
-      # keypress.keypress("Press any key to continue...".blue.blink)
-      #
-      # clear_screen
-      #
-      trainer_menu(active_trainer)
+      end
+      menu.choice 'Go back', -> do
+        pid = fork{ exec 'afplay', './media/menu_select.wav' }
+        sleep(0.3)
+        clear_screen
+        location_menu(active_trainer)
+      end
     end
-    menu.choice 'Go back', -> do
-      pid = fork{ exec 'afplay', './media/menu_select.wav' }
-      sleep(0.3)
-      clear_screen
-      location_menu(active_trainer)
-    end
+  trainer_menu(active_trainer)
   end
-end
 
 def pokemon_menu(active_trainer)
   # clear_screen
