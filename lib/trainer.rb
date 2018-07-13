@@ -150,7 +150,7 @@ class Trainer < ActiveRecord::Base
         :center_x => true,
         :center_y => false,
         :resolution => "high"
-      sleep(2)
+      continue_key
       location_menu(self)
     end
   end
