@@ -239,7 +239,6 @@ def trainer_menu(active_trainer)
           # active_trainer.encounters.reload
           # pokemon_menu(active_trainer)
         end
->>>>>>> peter16
 
       # puts "\n"
       # keypress = TTY::Prompt.new
