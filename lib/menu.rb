@@ -10,7 +10,7 @@ def start_game
   Catpix::print_image "./media/images/pokemon_logo.png",
     :limit_x => 0.5,
     :limit_y => 0.5,
-    :center_x => true,
+    :center_x => false,
     :center_y => false,
     :resolution => "auto"
 
@@ -99,7 +99,7 @@ def location_menu(active_trainer)
       Catpix::print_image "./media/images/pokebike.gif",
         :limit_x => 0.5,
         :limit_y => 0.5,
-        :center_x => true,
+        :center_x => false,
         :center_y => false,
         :resolution => "auto"
 

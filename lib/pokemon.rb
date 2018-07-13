@@ -62,7 +62,7 @@ class Pokemon < ActiveRecord::Base
     Catpix::print_image "http://www.pokestadium.com/sprites/xy/#{self.name.downcase}.gif",
       :limit_x => 0.5,
       :limit_y => 0.5,
-      :center_x => true,
+      :center_x => false,
       :center_y => false,
       :resolution => "high"
   end
@@ -91,7 +91,7 @@ class Pokemon < ActiveRecord::Base
     weather_pokemon = WeatherPokemon.all.where("weather_type_id == '#{weather_id}'")
     found_pokemon_id = weather_pokemon.sample.pokemon_id
     found_pokemon = self.find_by(pokedex_id: "#{found_pokemon_id}")
-    puts "A wild #{found_pokemon.name} has appeared!".yellow
+    puts "A wild #{found_pokemon.name} has appeared!".yellow.blink
     found_pokemon.display_image
     found_pokemon
     # matched = self.all.where("type_1 = '#{weather}'").or(self.all.where("type_2 = '#{weather}'"))
@@ -103,7 +103,7 @@ class Pokemon < ActiveRecord::Base
     weather_pokemon = WeatherPokemon.all.where("weather_type_id != '#{weather_id}'")
     found_pokemon_id = weather_pokemon.sample.pokemon_id
     found_pokemon = self.find_by(pokedex_id: "#{found_pokemon_id}")
-    puts "A wild #{found_pokemon.name} has appeared!".yellow
+    puts "A wild #{found_pokemon.name} has appeared!".yellow.blink
     found_pokemon.display_image
     found_pokemon
     # p weather_pokemon

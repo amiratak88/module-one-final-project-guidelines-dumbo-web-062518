@@ -6,7 +6,7 @@ class Trainer < ActiveRecord::Base
   def go_to_location(location_name = "WeWork Dumbo")
     v = display_location(location_name)
     if v["status"] == "ZERO_RESULTS"
-      puts "Please enter a new location."
+      puts "Please enter a new location.".yellow
       location_menu(active_trainer)
     else
       Visit.create(location_id: v.id, trainer_id: self.id, weather: "#{Location.fetch_weather(latitude(location_name), longitude(location_name))}")
@@ -108,13 +108,13 @@ class Trainer < ActiveRecord::Base
     # if pokemon_run_chance > 85
     #   puts "Pokemon got away"
       if pokemon_hp <= 0
-        puts "OMG you have killed #{found_pokemon.name}!".red
+        puts "OMG you have killed #{found_pokemon.name}!".red.blink
       elsif pokemon_hp < 400
-        puts "#{found_pokemon.name} is weak!".green
+        puts "#{found_pokemon.name} is weak!".green.blink
       elsif pokemon_hp < 600
-        puts "#{found_pokemon.name} is looking tired...".yellow
+        puts "#{found_pokemon.name} is looking tired...".yellow.blink
       elsif pokemon_hp < 800
-        puts "#{found_pokemon.name} is pretty angry!".red
+        puts "#{found_pokemon.name} is pretty angry!".red.blink
       end
     # end
     pokemon_hp
@@ -127,7 +127,7 @@ class Trainer < ActiveRecord::Base
     pokemon_run_chance += rand(1..100)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
-    puts "You attacked #{found_pokemon.name}!".red.blink
+    puts "You attacked #{found_pokemon.name}!".red
     sleep(1)
     pokemon_status(found_pokemon, pokemon_hp)
     if pokemon_run_chance > 85
