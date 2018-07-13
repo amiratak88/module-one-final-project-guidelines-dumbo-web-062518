@@ -212,10 +212,11 @@ def trainer_menu(active_trainer)
             pokemon_array = []
             the_list = []
             locale.each do |visit|
-              the_list = Encounter.where(visit_id: visit.id)
-              the_list.each do |visit|
-              # binding.pry
-              pokemon_array << "#{Pokemon.find(visit.pokemon_id).name}".green
+                if visit.trainer_id == active_trainer.id
+                  the_list = Encounter.where(visit_id: visit.id)
+                end
+            pokemon_array = the_list.map do |visit|
+               "#{Pokemon.find(visit.pokemon_id).name}".green
             end
               end
             end
@@ -242,6 +243,8 @@ def trainer_menu(active_trainer)
             if pokemon_array == []
               puts "It doesn't look like you've caught any Pokemon here!".magenta
             else
+
+              # binding.pry
               puts "These are the pokemon you caught at #{Location.find(locale_id).name}".blue
               pokemon_array.each do |item|
                 if item != nil
