@@ -129,7 +129,7 @@ end
 
 def encounter_menu(active_trainer)
   my_location = Location.find($current_location.id).name
-  weather = Location.weather_pokemon(active_trainer.latitude(my_location), active_trainer.longitude(my_location)).downcase
+  weather = Location.weather_pokemon($current_location.latitude, $current_location.longitude).downcase
   found_pokemon = Pokemon.generate_pokemon_type(weather)
 
   input = TTY::Prompt.new
@@ -164,6 +164,7 @@ def trainer_menu(active_trainer)
   input.select("Hello trainer #{active_trainer.name}!".blue, cycle: true) do |menu|
     menu.choice 'View pokemon', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      clear_screen
       pokemon_menu(active_trainer)
     end
 
@@ -179,10 +180,75 @@ def trainer_menu(active_trainer)
       continue_key
 
       clear_screen
+      input = TTY::Prompt.new
+      puts "\n"
+      input.select("What would you like to do?".blue, cycle: true) do |menu|
+          prompt = TTY::Prompt.new
+          result = prompt.collect do
 
+            menu.choice 'Caught pokemon', -> do
+            pid = fork{ exec 'afplay', './media/menu_select.wav' }
+            prompt = TTY::Prompt.new
+            is_valid_encounter_id = false
+
+            while is_valid_encounter_id == false
+              locale_id = ask('Enter a location number: '.blue) do |q|
+                q.convert :int
+                q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
+                q.required true
+              end
+
+              if !Location.where(id: locale_id).empty?
+                is_valid_encounter_id = true
+              else
+                puts "Invalid ID. Please enter a number.".red
+              end
+            end
+
+            locale = Visit.all.select {|visit| visit.location_id == locale_id}
+            pokemon_array = []
+            the_list = locale.each do |visit|
+              if Encounter.find_by(visit_id: visit.id) != nil
+                # binding.pry
+                pokemon_array << "#{Pokemon.find(Encounter.find_by(visit_id: visit.id).pokemon_id).name}"
+              end
+            end
+            clear_screen
+# binding.pry
+            if pokemon_array == []
+              puts "It doesn't look like you've caught any Pokemon here!".magenta
+            else
+              puts "These are the pokemon you caught at #{Location.find(locale_id).name}".blue
+              pokemon_array.each do |item|
+                if item != nil
+                  puts item
+                end
+              end
+            end
+
+            # pkmn.nickname = nickname
+            # pkmn.save
+          end
+        end
+        menu.choice 'Go back', -> do
+          pid = fork{ exec 'afplay', './media/menu_select.wav' }
+          sleep(0.3)
+          clear_screen
+          trainer_menu(active_trainer)
+        end
+          # active_trainer.encounters.reload
+          # pokemon_menu(active_trainer)
+        end
+>>>>>>> peter16
+
+      # puts "\n"
+      # keypress = TTY::Prompt.new
+      # keypress.keypress("Press any key to continue...".blue.blink)
+      #
+      # clear_screen
+      #
       trainer_menu(active_trainer)
     end
-
     menu.choice 'Go back', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       sleep(0.3)
@@ -193,7 +259,7 @@ def trainer_menu(active_trainer)
 end
 
 def pokemon_menu(active_trainer)
-  clear_screen
+  # clear_screen
   pokemon = active_trainer.my_pokemon
   active_trainer.encounters.reload
   puts "\n"
@@ -310,11 +376,10 @@ def pokemon_menu(active_trainer)
             puts "Invalid ID. Please enter a number.".red
           end
         end
-
+        clear_screen
         pkmn = Encounter.find(poke_id)
         puts "You caught #{Pokemon.find(pkmn.pokemon_id).name} at #{pkmn.the_place}!"
         puts "You saw #{Visit.find(pkmn.visit_id).weather} while you were there."
-        sleep (5)
 #display the location here
       end
 

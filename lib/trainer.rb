@@ -231,8 +231,8 @@ class Trainer < ActiveRecord::Base
 
   def my_locations_with_weather
     visits = Visit.where("trainer_id=#{self.id}")
-    uniq_locations = visits.map { |visit| "#{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
-    uniq_locations.uniq.each_with_index { |location, index| puts "#{index+1}. #{location}" }
+    uniq_locations = visits.map { |visit| "#{visit.location_id}. #{Location.find(visit.location_id).name}.  You saw #{visit.weather}" }
+    uniq_locations.uniq.each { |location| puts "#{location}" }
   end
 
   def get_gender
