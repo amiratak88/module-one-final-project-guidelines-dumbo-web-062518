@@ -124,28 +124,26 @@ class Trainer < ActiveRecord::Base
       self.encounters.reload
 
       spinner.stop("You caught #{found_pokemon.name}!".green)
+      sleep(2)
     else
       spinner.stop("#{found_pokemon.name} popped out".yellow)
-
+      sleep(2)
+      pokemon_runaway(found_pokemon)
       found_pokemon.display_image
       battle_menu(found_pokemon, pokemon_hp, self)
     end
   end
 
-  def pokemon_status(found_pokemon,pokemon_hp)
-    # if pokemon_run_chance > 85
-    #   puts "Pokemon got away"
-      if pokemon_hp <= 0
-        puts "OMG you have killed #{found_pokemon.name}!".red.blink
-      elsif pokemon_hp < 400
-        puts "#{found_pokemon.name} is weak!".green.blink
-      elsif pokemon_hp < 600
-        puts "#{found_pokemon.name} is looking tired...".yellow.blink
-      elsif pokemon_hp < 800
-        puts "#{found_pokemon.name} is pretty angry!".red.blink
-      end
-    # end
-    pokemon_hp
+  def pokemon_status(found_pokemon, pokemon_hp)
+    if pokemon_hp <= 0
+      puts "OMG you have killed #{found_pokemon.name}!".red.blink
+    elsif pokemon_hp < 400
+      puts "#{found_pokemon.name} is weak!".green.blink
+    elsif pokemon_hp < 600
+      puts "#{found_pokemon.name} is looking tired...".yellow.blink
+    elsif pokemon_hp < 800
+      puts "#{found_pokemon.name} is pretty angry!".red.blink
+    end
   end
 
   def battle_pokemon(found_pokemon, pokemon_hp)
@@ -162,6 +160,8 @@ class Trainer < ActiveRecord::Base
     #   puts "Pokemon got away".magenta
     #   location_menu(self)
     # end
+    pokemon_runaway(found_pokemon)
+
     if pokemon_hp <= 0
       Catpix::print_image "./media/images/cubone_skull_crossbones.png",
         :limit_x => 0.5,
@@ -172,8 +172,18 @@ class Trainer < ActiveRecord::Base
     else
       found_pokemon.display_image
     end
-    # battle_pokemon_menu
+
     battle_menu(found_pokemon, pokemon_hp, self)
+  end
+
+  def pokemon_runaway(found_pokemon)
+    run_chance = rand(1..100)
+
+    if run_chance <= 20
+      puts "#{found_pokemon.name} got away...".magenta.blink
+      sleep(3)
+      location_menu(self)
+    end
   end
 
   def my_pokemon
