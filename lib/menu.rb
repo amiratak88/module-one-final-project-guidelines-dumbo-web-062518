@@ -283,6 +283,37 @@ def pokemon_menu(active_trainer)
       pokemon_menu(active_trainer)
     end
 
+    menu.choice 'Pokemon Location', -> do
+      pid = fork{ exec 'afplay', './media/menu_select.wav' }
+      prompt = TTY::Prompt.new
+      result = prompt.collect do
+        is_valid_encounter_id = false
+
+        while is_valid_encounter_id == false
+          poke_id = ask('Enter a pokemon id to see where you caught them!'.blue) do |q|
+            q.convert :int
+            q.validate(/^\d+$/, 'Invalid ID. Please enter a number.'.red)
+            q.required true
+          end
+
+          if !Encounter.where(id: poke_id).empty?
+            is_valid_encounter_id = true
+          else
+            puts "Invalid ID. Please enter a number.".red
+          end
+        end
+
+        pkmn = Encounter.find(poke_id)
+        puts "You caught #{Pokemon.find(pkmn.pokemon_id).name} at #{pkmn.the_place}!"
+        puts "You saw #{Visit.find(pkmn.visit_id).weather} while you were there."
+        sleep (5)
+#display the location here
+      end
+
+      active_trainer.encounters.reload
+      pokemon_menu(active_trainer)
+    end
+
     menu.choice 'Go back', -> do
       pid = fork{ exec 'afplay', './media/menu_select.wav' }
       clear_screen
