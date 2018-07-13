@@ -114,7 +114,7 @@ class Trainer < ActiveRecord::Base
     chance = (((1000 - pokemon_hp) / 100) * multiplier) + chance # at 200hp, chance is 50%
 
     clear_screen
-    puts "#{chance}% chance to catch - #{pokemon_hp} HP"
+    # puts "#{chance}% chance to catch - #{pokemon_hp} HP"
     spinner = TTY::Spinner.new("[:spinner] The pokeball is wiggling...".yellow, format: :spin_2)
     spinner.auto_spin
     sleep(2)
@@ -126,7 +126,7 @@ class Trainer < ActiveRecord::Base
       spinner.stop("You caught #{found_pokemon.name}!".green)
       sleep(2)
     else
-      spinner.stop("#{found_pokemon.name} popped out".yellow)
+      spinner.stop("#{found_pokemon.name} popped out!".yellow)
       sleep(2)
       pokemon_runaway(found_pokemon)
       found_pokemon.display_image
