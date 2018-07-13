@@ -173,7 +173,7 @@ class Trainer < ActiveRecord::Base
   def battle_pokemon(found_pokemon, pokemon_hp)
     clear_screen
     # pokemon_run_chance = 0
-    attack_pokemon = rand(1..500)
+    attack_pokemon = rand(50..500)
     # pokemon_run_chance += rand(1..100)
     pokemon_hp -= attack_pokemon
     pid = fork{ exec 'afplay', './media/battle_hit.wav' }
