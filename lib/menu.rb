@@ -11,6 +11,7 @@ end
 
 def select_sound
   pid = fork{ exec 'afplay', './media/menu_select.wav' }
+  sleep(0.4)
 end
 
 def start_game
